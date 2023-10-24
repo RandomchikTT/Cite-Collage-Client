@@ -17,8 +17,6 @@ window.emitter = emitter;
 emitter.on("RouterPush", (page) => {
     router.push(page);
 });
-emitter.emit("RouterPush", "/MainMenu");
-
 
 const Items = {
     Pizza: [],
@@ -29,16 +27,18 @@ const Items = {
 emitter.on("GetMainPageInfo", async () => {
     const result = await host.get("MainMenu");
     if (result) {
-        
+        console.log("GetMainPageInfo")
+        emitter.emit("RouterPush", '/MainMenu')
     }
 });
 
-// async function GetResult() {
-//     const result = await host.get("MainMenu");
-//     console.log(result)
-//     if (result) {
-//         console.log("RESULT: " + result.data);
-//     }
-// }
+emitter.emit("RouterPush", '/MainMenu')
 
-// GetResult();
+async function GetResult() {
+    const result = await host.get("MainMenu");
+    console.log(result)
+    if (result) {
+        console.log("RESULT: " + result.data);
+    }
+}
+GetResult();

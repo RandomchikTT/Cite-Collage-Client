@@ -113,7 +113,7 @@
 				</div>
 			</div>
 			<div class="right">
-				<div @click="autinfication = true" class="enterbtn">Войти</div>
+				<div @click="autinfication.active = true" class="enterbtn">Войти</div>
 			</div>
 		</header>
 		<nav class="navkorzina">
@@ -156,7 +156,7 @@
 				</div>
 			</section>
 		</main>
-		<div class="dodomodal" v-if="autinfication">
+		<div class="dodomodal" v-if="autinfication.active">
 			<div class="dodomodalwrap">
 				<svg class="dodomodalsvg" width="25" height="25" viewBox="0 0 25 25" fill="none"
 					xmlns="http://www.w3.org/2000/svg">
@@ -173,9 +173,12 @@
 				</div>
 				<div class="dodomodalnumberpole">
 					<div class="dodomodalnumbercall">Номер телефона</div>
-					<input class="dodomodalinput" placeholder="+7" />
+					<input class="dodomodalinput" 
+						placeholder="+375" 
+						v-model="phoneNumber"
+					/>
 				</div>
-				<div class="dodomodalkod">Выслать код</div>
+				<div class="dodomodalkod" :class="{ active: this.autinfication.activeButton }">Выслать код</div>
 				<div class="dodomodalsvyaz">
 					Продолжая, вы соглашаетесь
 					<span style="color: rgb(255, 105, 0); text-decoration: none">со сбором и обработкой персональных
@@ -354,12 +357,21 @@ export default {
 				activeCart: false,
 				activeAuth: false,
 			},
-			autinfication: false,
+			autinfication: {
+				active: false,
+				activeButton: false,
+			},
+			phoneNumber: "+375",
 		};
 	},
 	mounted() {
 		this.emitter.emit("GetMainPageInfo");
-	}
+	},
+	watch: {
+		phoneNumber() {
+			this.autinfication.activeButton = this.phoneNumber.length == 13;
+		}
+	},
 };
 </script>
 
@@ -704,6 +716,10 @@ export default {
 	font-size: 16px;
 	line-height: 24px;
 	border-radius: 4vmin;
+	&.active {
+		background: rgb(255, 105, 0);
+		color: rgb(255, 255, 255);
+	}
 }
 
 .dodomodalsvyaz {
@@ -730,8 +746,8 @@ export default {
 	background: rgb(255, 255, 255);
 	-webkit-font-smoothing: antialiased;
 	font-variant-ligatures: no-common-ligatures;
-	width: 38vmin;
-	height: 37vmin;
+	width: 50vmin;
+	height: 55vmin;
 	border-radius: 1vmin;
 	display: flex;
 	flex-direction: column;
