@@ -54,8 +54,10 @@
 			</div>
 			<div @click="SettingsWindow.activeCart = true" class="navkorzinanavs">
 				<div class="dodonamekorzina">Корзина</div>
-				<div class="dodopalka"></div>
-				<div class="dodonamber">{{ $store.state.MainMenu.Cart.length }}</div>
+				<template v-if="$store.state.MainMenu.Cart.length > 0">
+					<div class="dodopalka"></div>
+					<div class="dodonamber">{{ $store.state.MainMenu.Cart.length }}</div>
+				</template>
 			</div>
 		</nav>
 		<main class="mainsection" v-for="(key, index) in getCattegoryList" :key="index">
@@ -593,7 +595,7 @@ export default {
 }
 
 .dodomodal {
-	position: absolute;
+	position: fixed;
 	top: 50%;
 	left: 50%;
 	width: 100%;
