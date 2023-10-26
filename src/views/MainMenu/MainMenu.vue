@@ -43,12 +43,32 @@
 				</div>
 			</div>
 			<div class="right">
-				<div @click="authMenu.active = true" class="enterbtn">Войти</div>
+				<div @click="openAuthMenu" class="enterbtn">Войти</div>
 			</div>
 		</header>
+		<!-- <nav class="drop-menu">
+			<div class="grid">
+				<div class="logo_dodo">
+					<svg id="logo_svg__Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" xml:space="preserve">
+						<path d="M32.6 3c18.6 0 32.9 12.8 32.9 31.8C65.5 53.9 51.2 67 32.6 67H11.7C7.5 67 4 64.2 4 59.3V11c0-4.9 3.5-8 7.7-8h20.9z" fill="#ff6900"></path>
+						<path d="M54 27.9c-.1.8-1 .8-1.4.1-1.3-2.2-3-2.6-5.7-2.8-2-.1-4.4.1-6.6.1-.4 0-.5-.3-.5-.4.4-1.9 2-5.4 3.7-5.7.8-.1 2.6-.3 3.6-.3 4.6 0 7.1 5.3 6.9 9M28 46c2.9.8 7 1.3 10.4 1 5.9-.4 10.4-2.6 12.9-4.2-1.5 3.8-7.2 6.2-12.6 6.8 0 .3-.1.5-.1.8 4.1-.2 8-1.6 9.8-2.8-1 3.7-6 5.2-10.6 5.5-.1.3-.3.6-.4.8 2.7 0 5.2-.4 6.7-.9-2.1 3.9-11.1 6.6-18.7 3 1.7-3.4 2.5-6.8 2.6-10m25.1-26.6c-1.8-1.7-4.2-2.5-6.3-2.4-3 0-5.5.8-9.2.9-2.5.1-4.8-5.4-7.8-6.1-1.3-2.9-4.3-3.3-6.1-1.8-1.7-1-4.3-.5-4.4 1.4-1.9-.6-4.4.4-3.3 3-4.7.1-5.5 4.3-2.4 4.7-4.1 2.3-2.2 6.3 1.2 5.5.6 6 3.3 13.8-1.1 15.7-.5.2-2.5.7-6.3-.2-1.1-.3-2.3-.6-3.4-.9v3.1c3.3.8 6.6 1.4 8.7 1.2 5.8-.6 6.1-5.4 5.8-9.6-.3-4.1-1.7-8.9-1.2-12.3l-.2-.2c-2.1 2.2-3.5 1.6-3.7.9-.3-1.4 2.2-3.2 3.6-3.8 0-.1.1-.2.1-.3-1.3.2-2.9 0-3-.9-.1-1.1 2.2-2.2 5.2-1.9.1 0 .1-.1.2-.1l-.6-.3c-.8-.4-1-1.1-.7-1.5.3-.5 1.1-.7 1.8-.7 1.1 0 2 .3 2.7.6.1 0 .1-.1.2-.1-.2-.2-.5-.4-.6-.6-.2-.3-.2-.8.1-1 .4-.3 1.5-.4 2.4.4l.5.5c.1 0 .2 0 .3-.1-.2-.2-.3-.5-.3-.7-.1-.3 0-.7.4-.8s.9.1 1.2.5.5 1 .6 1.3c-2.1.2-4.6 1-6.1 3.1-1.5 2-2.1 5.2-1.2 8.2.6 3.1 1.8 6 2.9 9v.1c2.4 6.9 7 23.9-15.3 32.9.8.5 2.4.9 3.7.9h2.3c4.6-2.4 7.7-5.3 9.9-8.2 10.2 4.5 19.5 2.2 23.5-5.2 2.7-1.6 4.4-4.9 4.5-7.2 1.7-2.1 2-4.7 1.5-6.5-.1-.4-.5-.4-1.1-.1-8.3 5-15.6 5.8-24.3 3.2-.2-3.4-.9-6.3-1.2-8.1-.2-3.5.9-5.2 7.3-3.1 4.2 1.1 6.1 3 7.6 4 .7.5 1.6 1.1 2.1.7.3-.2.4-.8.4-1.5-.1-1.9-1-5.1-1.8-6.3 2.5-.1 4.6-.1 5.7 0 2.4.4 2.6 1.7 2.9 2.2.7 2 4.6 1.5 4.9-.2.6-3.5.8-8.1-2.6-11.3m-44.4 30c-1.6-.1-3.2-.1-4.7 0v2.1c2.7-.6 4.4-.9 4.4-.9l.3-1.2z"></path><path class="logo_svg__st1" d="M33.7 27.5c-3.5-.8-7.4-1.8-9.4-4.8 0-.1-.1-.1-.2-.1s-.1.1-.1.1c0 .2 0 .3.1.5l-.3.1c-.5-.8-.7-1.7-.1-2.4.8-1 2.3-.9 3.3-.3l-.1.3c-.5-.1-1-.1-1.4.1-.3.2-.4.5-.2.8C27 25 32 25.7 37.9 25.2c.6 0 .7-.3.8-.6.5-2 1.4-3.9 2.8-5.3-1.1.2-2.1.2-2.9.2-3 .2-4.8-.2-5.3-.6l.1-.3c.3.1.7.1.7 0 .1-.1 0-.2-.1-.3-.6-.5-3.2-3.2-3.2-3.2-.3-2.3-3.6-2.3-4.9-.1l-.4-.1c.1-.5.3-.9.5-1.2-2.7.6-4.3 3.1-4.6 5.4-1.2 10.2 14.3 7.8 18.7 11.9.1.1.3.4.4.2.2-.2-1.8-2.6-6.8-3.7m-5.4-12.2c.7-.2 1.8.5 2.3 1.6.6 1.1.4 2.2-.3 2.5s-1.8-.5-2.3-1.6c-.1-.2-.1-.3-.2-.5h.1c.2.2.5.3.7.2.3-.2.2-.6 0-1-.2-.3-.5-.6-.8-.6l-.1-.1c.2-.3.4-.4.6-.5M51.3 42.8c-2.5 1.6-7 3.8-12.9 4.2-3.4.2-7.4-.2-10.4-1 0 1-.1 2-.3 3 1.7.4 4.6 1 8.9 1.1-.2 1.1-1.4 5.1-4.3 7.6 5.4.2 10.3-1.9 11.8-4.7-1.5.5-4.1 1-6.7.9.1-.3.3-.5.4-.8 4.6-.2 9.6-1.7 10.6-5.5-1.8 1.2-5.7 2.6-9.8 2.8 0-.3.1-.5.1-.8 5.4-.7 11.1-3 12.6-6.8"></path>
+					</svg>
+				</div>
+				<nav class="cattegories" style="width: 70%;">
+					<ul class="cattegories_child">
+						<li class="cattegory" v-for="(key, index) in getCattegoryList" :key="index">
+							<a class="name_cattegory"></a>
+						</li>
+					</ul>
+				</nav>
+				<div class="korzina">
+
+				</div>
+			</div>
+		</nav> -->
 		<nav class="navkorzina">
 			<div class="categories">
-				<div class="categories__item" v-for="(item, index) in getCattegoryList" :key="index">
+				<div class="categories__item" v-for="(item, index) in getCattegoryList" :key="index" @click="scrollToCattegory(item)">
 					{{ getCattegoryRealName(item) }}
 				</div>
 			</div>
@@ -60,7 +80,7 @@
 				</template>
 			</div>
 		</nav>
-		<main class="mainsection" v-for="(key, index) in getCattegoryList" :key="index">
+		<main class="mainsection" v-for="(key, index) in getCattegoryList" :id="`categories__item_` + key" :key="index">
 			<div class="pizzadodo">{{ getCattegoryRealName(key) }}</div>
 			<section class="wrapmain">
 				<div class="dodoinfo" v-for="(item, index) in getItemsCattegory(key)" :key="index">
@@ -76,7 +96,7 @@
 		</main>
 		<div class="dodomodal" v-if="authMenu.active">
 			<div class="dodomodalwrap">
-				<svg class="dodomodalsvg" width="25" height="25" viewBox="0 0 25 25" fill="none" @click="authMenu.active = false"
+				<svg class="dodomodalsvg" width="25" height="25" viewBox="0 0 25 25" fill="none" @click="closeAuthMenu"
 					xmlns="http://www.w3.org/2000/svg">
 					<path fill-rule="evenodd" clip-rule="evenodd"
 						d="M9.84606 12.4986L0.552631 3.20519C-0.1806 2.47196 -0.1806 1.28315 0.552631 0.549923C1.28586 -0.183308 2.47466 -0.183308 3.20789 0.549923L12.5013 9.84335L21.792 0.552631C22.5253 -0.1806 23.7141 -0.1806 24.4473 0.552631C25.1805 1.28586 25.1805 2.47466 24.4473 3.20789L15.1566 12.4986L24.45 21.792C25.1832 22.5253 25.1832 23.7141 24.45 24.4473C23.7168 25.1805 22.528 25.1805 21.7947 24.4473L12.5013 15.1539L3.20519 24.45C2.47196 25.1832 1.28315 25.1832 0.549923 24.45C-0.183308 23.7168 -0.183308 22.528 0.549923 21.7947L9.84606 12.4986Z"
@@ -156,11 +176,12 @@
 					d="M9.61 12.199L.54 3.129A1.833 1.833 0 113.13.536l9.07 9.07L21.27.54a1.833 1.833 0 012.592 2.592l-9.068 9.068 9.07 9.07a1.833 1.833 0 01-2.59 2.592l-9.072-9.07-9.073 9.073a1.833 1.833 0 01-2.591-2.592L9.61 12.2z"
 					fill="#fff"></path>
 			</svg>
-			<img class="imgkorzina" src="https://dodopizza-a.akamaihd.net/site-static/dist/121df529925b0f43cc73.svg" />
+			<img class="imgkorzina" src="../../../public/assets/images/CartClear.svg" />
 			<div class="korzinaname">Ой, пусто</div>
 			<p class="korzinainfo">
-				Ваша корзина пуста, откройте «Меню» и выберите понравившийся товар. Мы
-				доставим ваш заказ от <span>19.9 Br</span>
+				Ваша корзина пуста, откройте «Меню»
+				и выберите понравившийся товар.
+				Мы доставим ваш заказ от <span>14,90 руб.</span>
 			</p>
 		</div>
 		<div class="dublkorzina" v-else>
@@ -377,6 +398,20 @@ export default {
 		}
 	},
 	methods: {
+		openAuthMenu() {
+			this.authMenu.active = true;
+			document.body.style.overflow = 'hidden';
+		},
+		closeAuthMenu() {
+			this.authMenu.active = false;
+			document.body.style.overflow = 'auto';
+		},
+		scrollToCattegory(cattegory) {
+			const divElement = document.getElementById(`categories__item_${cattegory}`);
+            if (divElement) {
+                divElement.scrollIntoView({ behavior: "smooth" });
+            }
+		},
 		authorization() {
 			if (!this.authMenu.password || !this.authMenu.login) return;
 			if (this.authMenu.password.length <= 3) {
@@ -456,7 +491,68 @@ export default {
 		width: 540px !important;
 	}
 }
+// .drop-menu {
+// 	width: 100%;
+//     position: sticky;
+//     top: 0px;
+//     background-color: rgba(255, 255, 255, 0.75);
+//     z-index: 10;
+//     backdrop-filter: blur(20px);
+// 	.grid {
+// 		width: 960px;
+// 		.logo_dodo {
+// 			display: inline-block;
+// 			vertical-align: middle;
+// 			overflow: hidden;
+// 			font-size: 0px;
+// 			line-height: 0;
+// 			position: relative;
+// 			width: 52px;
+// 			padding-right: 16px;
+// 			height: 36px;
+// 		}
+// 		.cattegories {
+// 			.cattegories_child {
+// 				white-space: nowrap;
+// 				list-style: none;
+// 				margin: 0px;
+// 				padding: 0px;
+// 				z-index: 9999;
+// 				display: inline-block;
+// 				vertical-align: middle;
+// 				.cattegory {
+// 					&:first-child {
+//     					margin-left: 0px;
+// 					}
+// 					white-space: nowrap;
+// 					list-style: none;
+// 					margin: 0px;
+// 					padding: 0px;
+// 					display: inline-block;
+// 					vertical-align: middle;
+// 					.name_cattegory {
+// 						display: inline-block;
+// 						font-family: Dodo, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+// 						font-weight: 600;
+// 						padding: 22px 0px;
+// 						color: black;
+// 						font-size: 14px;
+// 						line-height: 1;
+// 						transition: color 0.25s ease 0s, padding 0.25s ease 0s;
+// 					}
+// 				}
+// 			}
 
+// 		}
+// 		.korzina {
+// 			position: absolute;
+// 			top: 0px;
+// 			right: 0px;
+// 			z-index: 1;
+// 			height: 100%;
+// 		}
+// 	}
+// }
 .svgdodoreiting {}
 .itemwrapdodo {
 	display: flex;
@@ -1430,12 +1526,10 @@ export default {
 		cursor: pointer;
 	}
 }
-
 .main {
 	min-height: 100%;
 	display: flex;
 	flex-flow: column;
-
 	.header {
 		display: flex;
 		-webkit-box-pack: justify;
