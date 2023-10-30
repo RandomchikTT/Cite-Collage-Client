@@ -3,7 +3,7 @@
 	<router-view/>
 </template>
 <script>
-import Notification from './views/Notify/Notify.vue'
+import Notification from './views/Notification/Notification.vue'
 export default {
 	components: {
 		Notification

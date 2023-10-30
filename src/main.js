@@ -44,7 +44,7 @@ async function GetResult() {
             Password: storedData.Password,
         }
     });
-    if (result) {
+    if (result && result.data) {
         
     }
 }

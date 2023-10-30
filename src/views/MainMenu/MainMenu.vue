@@ -46,29 +46,9 @@
 				<div @click="openAuthMenu" class="enterbtn">Войти</div>
 			</div>
 		</header>
-		<!-- <nav class="drop-menu">
-			<div class="grid">
-				<div class="logo_dodo">
-					<svg id="logo_svg__Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" xml:space="preserve">
-						<path d="M32.6 3c18.6 0 32.9 12.8 32.9 31.8C65.5 53.9 51.2 67 32.6 67H11.7C7.5 67 4 64.2 4 59.3V11c0-4.9 3.5-8 7.7-8h20.9z" fill="#ff6900"></path>
-						<path d="M54 27.9c-.1.8-1 .8-1.4.1-1.3-2.2-3-2.6-5.7-2.8-2-.1-4.4.1-6.6.1-.4 0-.5-.3-.5-.4.4-1.9 2-5.4 3.7-5.7.8-.1 2.6-.3 3.6-.3 4.6 0 7.1 5.3 6.9 9M28 46c2.9.8 7 1.3 10.4 1 5.9-.4 10.4-2.6 12.9-4.2-1.5 3.8-7.2 6.2-12.6 6.8 0 .3-.1.5-.1.8 4.1-.2 8-1.6 9.8-2.8-1 3.7-6 5.2-10.6 5.5-.1.3-.3.6-.4.8 2.7 0 5.2-.4 6.7-.9-2.1 3.9-11.1 6.6-18.7 3 1.7-3.4 2.5-6.8 2.6-10m25.1-26.6c-1.8-1.7-4.2-2.5-6.3-2.4-3 0-5.5.8-9.2.9-2.5.1-4.8-5.4-7.8-6.1-1.3-2.9-4.3-3.3-6.1-1.8-1.7-1-4.3-.5-4.4 1.4-1.9-.6-4.4.4-3.3 3-4.7.1-5.5 4.3-2.4 4.7-4.1 2.3-2.2 6.3 1.2 5.5.6 6 3.3 13.8-1.1 15.7-.5.2-2.5.7-6.3-.2-1.1-.3-2.3-.6-3.4-.9v3.1c3.3.8 6.6 1.4 8.7 1.2 5.8-.6 6.1-5.4 5.8-9.6-.3-4.1-1.7-8.9-1.2-12.3l-.2-.2c-2.1 2.2-3.5 1.6-3.7.9-.3-1.4 2.2-3.2 3.6-3.8 0-.1.1-.2.1-.3-1.3.2-2.9 0-3-.9-.1-1.1 2.2-2.2 5.2-1.9.1 0 .1-.1.2-.1l-.6-.3c-.8-.4-1-1.1-.7-1.5.3-.5 1.1-.7 1.8-.7 1.1 0 2 .3 2.7.6.1 0 .1-.1.2-.1-.2-.2-.5-.4-.6-.6-.2-.3-.2-.8.1-1 .4-.3 1.5-.4 2.4.4l.5.5c.1 0 .2 0 .3-.1-.2-.2-.3-.5-.3-.7-.1-.3 0-.7.4-.8s.9.1 1.2.5.5 1 .6 1.3c-2.1.2-4.6 1-6.1 3.1-1.5 2-2.1 5.2-1.2 8.2.6 3.1 1.8 6 2.9 9v.1c2.4 6.9 7 23.9-15.3 32.9.8.5 2.4.9 3.7.9h2.3c4.6-2.4 7.7-5.3 9.9-8.2 10.2 4.5 19.5 2.2 23.5-5.2 2.7-1.6 4.4-4.9 4.5-7.2 1.7-2.1 2-4.7 1.5-6.5-.1-.4-.5-.4-1.1-.1-8.3 5-15.6 5.8-24.3 3.2-.2-3.4-.9-6.3-1.2-8.1-.2-3.5.9-5.2 7.3-3.1 4.2 1.1 6.1 3 7.6 4 .7.5 1.6 1.1 2.1.7.3-.2.4-.8.4-1.5-.1-1.9-1-5.1-1.8-6.3 2.5-.1 4.6-.1 5.7 0 2.4.4 2.6 1.7 2.9 2.2.7 2 4.6 1.5 4.9-.2.6-3.5.8-8.1-2.6-11.3m-44.4 30c-1.6-.1-3.2-.1-4.7 0v2.1c2.7-.6 4.4-.9 4.4-.9l.3-1.2z"></path><path class="logo_svg__st1" d="M33.7 27.5c-3.5-.8-7.4-1.8-9.4-4.8 0-.1-.1-.1-.2-.1s-.1.1-.1.1c0 .2 0 .3.1.5l-.3.1c-.5-.8-.7-1.7-.1-2.4.8-1 2.3-.9 3.3-.3l-.1.3c-.5-.1-1-.1-1.4.1-.3.2-.4.5-.2.8C27 25 32 25.7 37.9 25.2c.6 0 .7-.3.8-.6.5-2 1.4-3.9 2.8-5.3-1.1.2-2.1.2-2.9.2-3 .2-4.8-.2-5.3-.6l.1-.3c.3.1.7.1.7 0 .1-.1 0-.2-.1-.3-.6-.5-3.2-3.2-3.2-3.2-.3-2.3-3.6-2.3-4.9-.1l-.4-.1c.1-.5.3-.9.5-1.2-2.7.6-4.3 3.1-4.6 5.4-1.2 10.2 14.3 7.8 18.7 11.9.1.1.3.4.4.2.2-.2-1.8-2.6-6.8-3.7m-5.4-12.2c.7-.2 1.8.5 2.3 1.6.6 1.1.4 2.2-.3 2.5s-1.8-.5-2.3-1.6c-.1-.2-.1-.3-.2-.5h.1c.2.2.5.3.7.2.3-.2.2-.6 0-1-.2-.3-.5-.6-.8-.6l-.1-.1c.2-.3.4-.4.6-.5M51.3 42.8c-2.5 1.6-7 3.8-12.9 4.2-3.4.2-7.4-.2-10.4-1 0 1-.1 2-.3 3 1.7.4 4.6 1 8.9 1.1-.2 1.1-1.4 5.1-4.3 7.6 5.4.2 10.3-1.9 11.8-4.7-1.5.5-4.1 1-6.7.9.1-.3.3-.5.4-.8 4.6-.2 9.6-1.7 10.6-5.5-1.8 1.2-5.7 2.6-9.8 2.8 0-.3.1-.5.1-.8 5.4-.7 11.1-3 12.6-6.8"></path>
-					</svg>
-				</div>
-				<nav class="cattegories" style="width: 70%;">
-					<ul class="cattegories_child">
-						<li class="cattegory" v-for="(key, index) in getCattegoryList" :key="index">
-							<a class="name_cattegory"></a>
-						</li>
-					</ul>
-				</nav>
-				<div class="korzina">
-
-				</div>
-			</div>
-		</nav> -->
 		<nav class="navkorzina">
-			<div class="categories">
-				<div class="categories__item" v-for="(item, index) in getCattegoryList" :key="index" @click="scrollToCattegory(item)">
+			<div class="categories" style="width: 70%;">
+				<div class="categories__item" :id="'item_' + item" v-for="(item, index) in getCattegoryList" :key="index" @click="scrollToCattegory(item)">
 					{{ getCattegoryRealName(item) }}
 				</div>
 			</div>
@@ -80,7 +60,7 @@
 				</template>
 			</div>
 		</nav>
-		<main class="mainsection" v-for="(key, index) in getCattegoryList" :id="`categories__item_` + key" :key="index">
+		<main class="mainsection" v-for="(key, index) in getCattegoryList" :id="`categories_item_` + key" :key="index">
 			<div class="pizzadodo">{{ getCattegoryRealName(key) }}</div>
 			<section class="wrapmain">
 				<div class="dodoinfo" v-for="(item, index) in getItemsCattegory(key)" :key="index">
@@ -89,7 +69,7 @@
 					<p class="dodoinformation">{{ item.Description }}</p>
 					<div class="dodobuy">
 						<div class="dodoprice">{{ getItemPrice(item) }}</div>
-						<div class="dodoenter">Выбрать</div>
+						<div class="dodoenter">{{ getButtonText(item.Cattegory) }}</div>
 					</div>
 				</div>
 			</section>
@@ -112,18 +92,65 @@
 				<div class="dodomodalnumberpole">
 					<div class="dodomodalnumbercall">Логин</div>
 					<input class="dodomodalinput" 
-						placeholder="" 
 						v-model="authMenu.login"
 					/>
 				</div>
 				<div class="dodomodalnumberpole">
 					<div class="dodomodalnumbercall">Пароль</div>
-					<input class="dodomodalinput" 
-						placeholder="" 
+					<input class="dodomodalinput"
 						v-model="authMenu.password"
 					/>
 				</div>
 				<div class="dodomodalkod" @click="authorization">Авторизоваться</div>
+				<div class="registration_button" @click="openRegisterMenu">Зарегистрироваться</div>
+				<div class="dodomodalsvyaz">
+					Продолжая, вы соглашаетесь
+					<span style="color: rgb(255, 105, 0); text-decoration: none">со сбором и обработкой персональных
+						данных и пользовательским
+						соглашением</span>
+				</div>
+			</div>
+		</div>
+		<div class="dodomodal" v-else-if="registrationMenu.active">
+			<div class="dodomodalwrap registration">
+				<svg class="dodomodalsvg" width="25" height="25" viewBox="0 0 25 25" fill="none" @click="closeAuthMenu"
+					xmlns="http://www.w3.org/2000/svg">
+					<path fill-rule="evenodd" clip-rule="evenodd"
+						d="M9.84606 12.4986L0.552631 3.20519C-0.1806 2.47196 -0.1806 1.28315 0.552631 0.549923C1.28586 -0.183308 2.47466 -0.183308 3.20789 0.549923L12.5013 9.84335L21.792 0.552631C22.5253 -0.1806 23.7141 -0.1806 24.4473 0.552631C25.1805 1.28586 25.1805 2.47466 24.4473 3.20789L15.1566 12.4986L24.45 21.792C25.1832 22.5253 25.1832 23.7141 24.45 24.4473C23.7168 25.1805 22.528 25.1805 21.7947 24.4473L12.5013 15.1539L3.20519 24.45C2.47196 25.1832 1.28315 25.1832 0.549923 24.45C-0.183308 23.7168 -0.183308 22.528 0.549923 21.7947L9.84606 12.4986Z"
+						fill="white"></path>
+				</svg>
+				<div class="dodomodalheader">
+					<div class="dodomodalenter">Регистрация</div>
+					<p class="dodomodalinfo">
+						Здесь вы можете зарегистрироваться на нашем сайте
+					</p>
+				</div>
+				<div class="dodomodalnumberpole">
+					<div class="dodomodalnumbercall">Логин</div>
+					<input class="dodomodalinput" 
+						v-model="registrationMenu.login"
+					/>
+				</div>
+				<div class="dodomodalnumberpole">
+					<div class="dodomodalnumbercall">Пароль</div>
+					<input class="dodomodalinput"
+						v-model="registrationMenu.password"
+					/>
+				</div>
+				<div class="dodomodalnumberpole">
+					<div class="dodomodalnumbercall">Телефон</div>
+					<input class="dodomodalinput"
+						v-model="registrationMenu.phoneNumber"
+					/>
+				</div>
+				<div class="dodomodalnumberpole">
+					<div class="dodomodalnumbercall">Имя</div>
+					<input class="dodomodalinput"
+						v-model="registrationMenu.name"
+					/>
+				</div>
+				<div class="dodomodalkod" @click="registration">Зарегистрироваться</div>
+				<div class="registration_button" @click="openAuthorizationOnRegister">Уже есть аккаунт</div>
 				<div class="dodomodalsvyaz">
 					Продолжая, вы соглашаетесь
 					<span style="color: rgb(255, 105, 0); text-decoration: none">со сбором и обработкой персональных
@@ -320,7 +347,8 @@
 		</div>
 	</div>
 </template>
-<script>
+<script>	
+import host from '../../AxiosMethods/index.js'
 export default {
 	data() {
 		return {
@@ -332,6 +360,13 @@ export default {
 				login: undefined,
 				password: undefined,
 			},
+			registrationMenu: {
+				active: false,
+				login: undefined,
+				password: undefined,
+				phoneNumber: undefined,
+				name: undefined,
+			}
 		};
 	},
 	computed: {
@@ -352,6 +387,21 @@ export default {
 						return "Дессерты";
 					case "Souse":
 						return "Соусы";
+				}
+			}
+		},
+		getButtonText() {
+			return (cattegory) => {
+				switch (cattegory) {
+					case "Pizza":
+						return "Выбрать";
+					case "Snack":
+					case "Drink":
+					case "Coctail":
+					case "Coffee":
+					case "Dessert":
+					case "Souse":
+						return `Добавить`;
 				}
 			}
 		},
@@ -398,6 +448,26 @@ export default {
 		}
 	},
 	methods: {
+		openAuthorizationOnRegister() {
+			this.clearRegistrationMenu();
+			this.authMenu.active = true;
+		},
+		clearRegistrationMenu() {
+			this.registrationMenu.active = false;
+			this.registrationMenu.login = undefined;
+			this.registrationMenu.password = undefined;
+			this.registrationMenu.phoneNumber = undefined;
+			this.registrationMenu.name = undefined;
+		},
+		clearAndCloseAuthMenu() {
+			this.authMenu.active = false;
+			this.authMenu.login = undefined;
+			this.authMenu.password = undefined;
+		},
+		openRegisterMenu() {
+			this.clearAndCloseAuthMenu();
+			this.registrationMenu.active = true
+		},
 		openAuthMenu() {
 			this.authMenu.active = true;
 			document.body.style.overflow = 'hidden';
@@ -407,22 +477,145 @@ export default {
 			document.body.style.overflow = 'auto';
 		},
 		scrollToCattegory(cattegory) {
-			const divElement = document.getElementById(`categories__item_${cattegory}`);
+			const divElement = document.getElementById(`categories_item_${cattegory}`);
             if (divElement) {
                 divElement.scrollIntoView({ behavior: "smooth" });
             }
 		},
-		authorization() {
-			if (!this.authMenu.password || !this.authMenu.login) return;
-			if (this.authMenu.password.length <= 3) {
-
+		async registration() {
+			if (this.registrationMenu.login == undefined || this.registrationMenu.login.length <= 3) {
+				this.emitter.emit("Notify:Push", {
+					Title: "Ошибка", 
+					Message: "Вы не указали логин !", 
+					Time: 2500
+				});
 				return;
 			}
+			if (this.registrationMenu.password == undefined || this.registrationMenu.password.length <= 3) {
+				this.emitter.emit("Notify:Push", {
+					Title: "Ошибка", 
+					Message: "Вы не указали пароль !", 
+					Time: 2500
+				});
+				return;
+			}
+			if (this.registrationMenu.phoneNumber == undefined || this.registrationMenu.phoneNumber.length != 12) {
+				this.emitter.emit("Notify:Push", {
+					Title: "Ошибка", 
+					Message: "Вы не указали номер телефона !", 
+					Time: 2500
+				});
+				return;
+			}
+			if (Number.isNaN(Number(this.registrationMenu.phoneNumber))) {
+				this.emitter.emit("Notify:Push", {
+					Title: "Ошибка", 
+					Message: "Проверьте номер телефона !", 
+					Time: 2500
+				});
+				return;
+			}
+			const result = await host.get("Registration", {
+				params: {
+					Login: this.registrationMenu.login,
+					Password: this.registrationMenu.password,
+					PhoneNumber: this.registrationMenu.phoneNumber,
+					Name: this.registrationMenu.name,
+				}
+			});
+			if (result && result.data) {
+				const response = result.data;
+				switch (response.Result) {
+					case "Success":
+						localStorage.setItem('PizzaMargarita.Cite.LoginData', {
+							Login: this.registrationMenu.login,
+							Password: this.registrationMenu.password
+						});
+						this.clearRegistrationMenu();
+						break;
+				}
+				this.emitter.emit("Notify:Push", {
+					Title: response.Result == "Error" ? "Ошибка" : "Успешно",
+					Message: response.Notify, 
+					Time: 2500
+				});
+			}
 		},
+		async authorization() {
+			if (this.authMenu.login == undefined || this.authMenu.login.length <= 3) {
+				this.emitter.emit("Notify:Push", {
+					Title: "Ошибка", 
+					Message: "Вы не указали логин !", 
+					Time: 2500
+				});
+				return;
+			}
+			if (this.authMenu.password == undefined || this.authMenu.password.length <= 3) {
+				this.emitter.emit("Notify:Push", {
+					Title: "Ошибка", 
+					Message: "Вы не указали пароль !", 
+					Time: 2500
+				});
+				return;
+			}
+			const result = await host.get("Authorization", {
+				params: {
+					Login: this.authMenu.login,
+					Password: this.authMenu.password,
+				}
+			});
+			if (result && result.data) {
+				const response = result.data;
+				switch (response.Result) {
+					case "Success":
+						localStorage.setItem('PizzaMargarita.Cite.LoginData', {
+							Login: this.authMenu.login,
+							Password: this.authMenu.password
+						});
+						this.closeAuthMenu();
+						break;
+				}
+				this.emitter.emit("Notify:Push", {
+					Title: response.Result == "Error" ? "Ошибка" : "Успешно",
+					Message: response.Notify, 
+					Time: 2500
+				});
+			}
+		},
+		handleScroll(e) {
+			const scrollingDiv = document.getElementsByClassName('navkorzina')[0];
+			const scrollPosition = window.scrollY;
+			if (scrollPosition > 200) {
+				scrollingDiv.classList.add('fixed');
+			} else {
+				scrollingDiv.classList.remove('fixed');
+			}
+			const mainSections = document.querySelectorAll('.mainsection');
+            mainSections.forEach(function(section) {
+                const offset = section.offsetTop;
+                const height = section.clientHeight;
+                if (scrollPosition >= offset && scrollPosition < offset + height) {
+					const nameCattegory = section.id.split("_")[2];
+					const divFind = document.getElementById(`item_${nameCattegory}`);
+					const activeClassName = 'active';
+					if (divFind) {
+						const divFindUnActive = document.getElementsByClassName("categories__item");
+						for (let i = 0; i < divFindUnActive.length; i++) {
+							divFindUnActive[i].classList.remove(activeClassName);
+						}
+						divFind.classList.add(activeClassName);
+					}
+                }
+            });
+		}
 	},
 	mounted() {
+		window.addEventListener('scroll', this.handleScroll);
 		this.emitter.emit("GetMainPageInfo");
 	},
+	unmounted() {
+		window.removeEventListener('scroll', this.handleScroll);
+	}
 };
 </script>
 
@@ -435,7 +628,6 @@ export default {
 	padding: 0px;
 	user-select: none;
 }
-
 @media screen and (max-width: 1439px) {
 	.header {
 		width: 1024px !important;
@@ -447,6 +639,10 @@ export default {
 
 	.mainsection {
 		width: 1024px !important;
+	}
+	.dodoinfo {
+		width: 266px !important;
+		margin-right: 74.6666px !important;
 	}
 }
 
@@ -462,6 +658,14 @@ export default {
 	.mainsection {
 		width: 960px !important;
 	}
+	.dodoinfo {
+		width: 280px !important;
+		margin-right: 39.3333px !important;
+	}
+	.dodoimg {
+		width: 33vmin !important;
+		height: 35vmin !important;
+	}
 }
 
 @media screen and (max-width: 960px) {
@@ -475,6 +679,14 @@ export default {
 
 	.mainsection {
 		width: 840px !important;
+	}
+	.dodoinfo {
+		width: 368px !important;
+		margin-right: 50px !important;
+	}
+	.dodoimg {
+		width: 40vmin !important;
+		height: 40vmin !important;
 	}
 }
 
@@ -490,70 +702,15 @@ export default {
 	.mainsection {
 		width: 540px !important;
 	}
+	.dodoinfo {
+		width: 490px !important;
+		margin-right: 0px !important;
+	}
+	.dodoimg {
+		width: 55vmin !important;
+		height: 55vmin !important;
+	}
 }
-// .drop-menu {
-// 	width: 100%;
-//     position: sticky;
-//     top: 0px;
-//     background-color: rgba(255, 255, 255, 0.75);
-//     z-index: 10;
-//     backdrop-filter: blur(20px);
-// 	.grid {
-// 		width: 960px;
-// 		.logo_dodo {
-// 			display: inline-block;
-// 			vertical-align: middle;
-// 			overflow: hidden;
-// 			font-size: 0px;
-// 			line-height: 0;
-// 			position: relative;
-// 			width: 52px;
-// 			padding-right: 16px;
-// 			height: 36px;
-// 		}
-// 		.cattegories {
-// 			.cattegories_child {
-// 				white-space: nowrap;
-// 				list-style: none;
-// 				margin: 0px;
-// 				padding: 0px;
-// 				z-index: 9999;
-// 				display: inline-block;
-// 				vertical-align: middle;
-// 				.cattegory {
-// 					&:first-child {
-//     					margin-left: 0px;
-// 					}
-// 					white-space: nowrap;
-// 					list-style: none;
-// 					margin: 0px;
-// 					padding: 0px;
-// 					display: inline-block;
-// 					vertical-align: middle;
-// 					.name_cattegory {
-// 						display: inline-block;
-// 						font-family: Dodo, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-// 						font-weight: 600;
-// 						padding: 22px 0px;
-// 						color: black;
-// 						font-size: 14px;
-// 						line-height: 1;
-// 						transition: color 0.25s ease 0s, padding 0.25s ease 0s;
-// 					}
-// 				}
-// 			}
-
-// 		}
-// 		.korzina {
-// 			position: absolute;
-// 			top: 0px;
-// 			right: 0px;
-// 			z-index: 1;
-// 			height: 100%;
-// 		}
-// 	}
-// }
-.svgdodoreiting {}
 .itemwrapdodo {
 	display: flex;
 	align-items: center;
@@ -918,7 +1075,9 @@ export default {
 .dodomodalinput::placeholder {
 	color: black;
 }
+.registration_button {
 
+}
 .dodomodalkod {
 	display: flex;
 	margin-top: 16px;
@@ -926,7 +1085,7 @@ export default {
 	align-items: center;
 	justify-content: center;
 	color: rgb(255, 255, 255);
-	cursor: not-allowed;
+	cursor: pointer;
 	height: 48px;
 	padding: 12px 24px;
 	font-size: 16px;
@@ -968,6 +1127,11 @@ export default {
 	justify-content: space-evenly;
 	padding: 1vmin 2.5vmin;
 	position: relative;
+	
+	&.registration {
+		width: 55vmin;
+		height: 80vmin;
+	}
 }
 
 .dodotho {
@@ -1331,7 +1495,14 @@ export default {
 	display: flex;
 	padding-bottom: 14px;
 	justify-content: space-between;
-
+	&.fixed {
+		width: 100%;
+		position: sticky;
+		top: -1px;
+		background-color: rgba(255, 255, 255, 0.75);
+		z-index: 10;
+		backdrop-filter: blur(20px);
+	}
 	.navkorzinanavs {
 		height: 40px;
 		padding: 8px 20px;
@@ -1373,7 +1544,6 @@ export default {
 		align-items: center;
 		column-gap: 1vmin;
 		background-color: none !important;
-
 		.categories__item {
 			display: inline-block;
 			font-family: Dodo, system-ui, -apple-system, BlinkMacSystemFont,
@@ -1381,12 +1551,14 @@ export default {
 				Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
 				"Segoe UI Symbol";
 			font-weight: 500;
-			padding: 25px 0 0 0;
+			padding: 18px 10px 0 0;
 			color: black;
 			font-size: 15px;
 			line-height: 1;
 			transition: color 0.25s ease 0s, padding 0.25s ease 0s;
-
+			&.active {
+				color: rgb(255, 105, 0);
+			}
 			&:hover {
 				color: rgb(255, 105, 0);
 				cursor: pointer;
@@ -1410,20 +1582,19 @@ export default {
 }
 
 .wrapmain {
-	align-items: center;
-	column-gap: 3.3vmin;
-	width: 100%;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-}
-
-.dodoinfo {
-	width: 40vmin;
 	display: flex;
-	flex-direction: column;
+	flex-wrap: wrap;
+}
+.dodoinfo {
+	display: flex;
+    flex-flow: column;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    margin-bottom: 60px;
+    cursor: pointer;
+    width: 292px;
+    margin-right: 27.3333px;
 	align-items: center;
-	justify-content: flex-start;
-	margin-bottom: 5vmin;
 }
 
 .dodoimg {
@@ -1530,6 +1701,7 @@ export default {
 	min-height: 100%;
 	display: flex;
 	flex-flow: column;
+	margin: 0px 32px 0px 32px;
 	.header {
 		display: flex;
 		-webkit-box-pack: justify;
