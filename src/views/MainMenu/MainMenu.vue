@@ -54,9 +54,9 @@
 			</div>
 			<div @click="SettingsWindow.activeCart = true" class="navkorzinanavs">
 				<div class="dodonamekorzina">Корзина</div>
-				<template v-if="$store.state.MainMenu.Cart.length > 0">
+				<template v-if="getItemInCarts > 0">
 					<div class="dodopalka"></div>
-					<div class="dodonamber">{{ $store.state.MainMenu.Cart.length }}</div>
+					<div class="dodonamber">{{ getItemInCarts }}</div>
 				</template>
 			</div>
 		</nav>
@@ -69,7 +69,21 @@
 					<p class="dodoinformation">{{ item.Description }}</p>
 					<div class="dodobuy">
 						<div class="dodoprice">{{ getItemPrice(item) }}</div>
-						<div class="dodoenter">{{ getButtonText(item.Cattegory) }}</div>
+						<div v-if="!getButtonText(item).Count" class="dodoenter" @click="addItemInCart(item.Cattegory, item.UUID)">{{ getButtonText(item) }}</div>
+						<div class="product-control" v-else>
+							<button type="button" class="product-set-item" @click="setItemCount(item.Cattegory, item.UUID, -1)">
+								<svg width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" class="icon">
+									<rect fill="#454B54" y="4" width="10" height="2" rx="1"></rect>
+								</svg>
+							</button>
+							<div class="counter">{{ getButtonText(item).Count }}</div>
+							<button type="button" class="product-set-item" @click="setItemCount(item.Cattegory, item.UUID, +1)">
+								<svg width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" class="icon"><g fill="#454B54">
+									<rect x="4" width="2" height="10" ry="1"></rect>
+									<rect y="4" width="10" height="2" rx="1"></rect></g>
+								</svg>
+							</button>
+						</div>
 					</div>
 				</div>
 			</section>
@@ -197,7 +211,7 @@
 	</div>
 	<div class="last_information"></div>
 	<div class="viftreu" v-if="SettingsWindow.activeCart">
-		<div class="viftreu__korzina" v-if="$store.state.MainMenu.Cart.length <= 0">
+		<div class="viftreu__korzina" v-if="getItemInCarts <= 0">
 			<svg @click="SettingsWindow.activeCart = false" class="svgexits" width="25" height="25" viewBox="0 0 25 25" fill="none">
 				<path fill-rule="evenodd" clip-rule="evenodd"
 					d="M9.61 12.199L.54 3.129A1.833 1.833 0 113.13.536l9.07 9.07L21.27.54a1.833 1.833 0 012.592 2.592l-9.068 9.068 9.07 9.07a1.833 1.833 0 01-2.59 2.592l-9.072-9.07-9.073 9.073a1.833 1.833 0 01-2.591-2.592L9.61 12.2z"
@@ -347,7 +361,7 @@
 		</div>
 	</div>
 </template>
-<script>	
+<script>
 import host from '../../AxiosMethods/index.js'
 export default {
 	data() {
@@ -391,8 +405,8 @@ export default {
 			}
 		},
 		getButtonText() {
-			return (cattegory) => {
-				switch (cattegory) {
+			return (item) => {
+				switch (item.Cattegory) {
 					case "Pizza":
 						return "Выбрать";
 					case "Snack":
@@ -401,6 +415,15 @@ export default {
 					case "Coffee":
 					case "Dessert":
 					case "Souse":
+						if (this.$store.state.loggedUser) {
+							const cartItems = this.$store.state.loggedUser.CartItems;
+							const findIndex = cartItems.findIndex(_ => _.CategoryType == item.Cattegory && _.UUID == item.UUID);
+							if (findIndex !== -1) {
+								return {
+									Count: cartItems[findIndex].Count
+								};
+							}
+						}
 						return `Добавить`;
 				}
 			}
@@ -413,6 +436,16 @@ export default {
 				}
 			});
 			return cattegoryList;
+		},
+		getItemInCarts() {
+			if (!this.$store.state.loggedUser) {
+				return 0;
+			}
+			let lengthCart = 0;
+			this.$store.state.loggedUser.CartItems.forEach(cartItem => {
+				lengthCart += cartItem.Count;
+			});
+			return lengthCart;
 		},
 		getItemPrice() {
 			return (item) => {
@@ -481,6 +514,93 @@ export default {
             if (divElement) {
                 divElement.scrollIntoView({ behavior: "smooth" });
             }
+		},
+		async setItemCount(cattegoryType, uuidItem, value) {
+			if (!this.$store.state.loggedUser) {
+				this.emitter.emit("Notify:Push", {
+					Title: "Ошибка", 
+					Message: "Вы не вошли в аккаунт !", 
+					Time: 2500
+				});
+				return;
+			}
+			switch (cattegoryType) {
+				case "Pizza":
+					// TODO MODAL
+					return;
+				case "Snack":
+				case "Drink":
+				case "Coctail":
+				case "Coffee":
+				case "Dessert":
+				case "Souse":
+					break;
+			}
+			const result = await host.get("SetValueItemInCart", {
+				params: {
+					CattegoryType: cattegoryType,
+					ItemUUID: uuidItem,
+					Login: this.$store.state.loggedUser.Login,
+					PhoneNumber: this.$store.state.loggedUser.PhoneNumber,
+					Value: value
+				}
+			});
+			if (result && result.data) {
+				const response = result.data;
+				switch (response.Result) {
+					case "Success":
+						this.$store.commit("setLoggedUserCartItems", response.CartList);
+						break;
+				}
+				this.emitter.emit("Notify:Push", {
+					Title: response.Result == "Error" ? "Ошибка" : "Успешно",
+					Message: response.Notify, 
+					Time: 2500
+				});
+			}
+		},
+		async addItemInCart(cattegoryType, uuidItem) {
+			if (!this.$store.state.loggedUser) {
+				this.emitter.emit("Notify:Push", {
+					Title: "Ошибка", 
+					Message: "Вы не вошли в аккаунт !", 
+					Time: 2500
+				});
+				return;
+			}
+			switch (cattegoryType) {
+				case "Pizza":
+					// TODO MODAL
+					return;
+				case "Snack":
+				case "Drink":
+				case "Coctail":
+				case "Coffee":
+				case "Dessert":
+				case "Souse":
+					break;
+			}
+			const result = await host.get("AddItemInCart", {
+				params: {
+					CattegoryType: cattegoryType,
+					ItemUUID: uuidItem,
+					Login: this.$store.state.loggedUser.Login,
+					PhoneNumber: this.$store.state.loggedUser.PhoneNumber,
+				}
+			});
+			if (result && result.data) {
+				const response = result.data;
+				switch (response.Result) {
+					case "Success":
+            			this.$store.commit("setLoggedUserCartItems", response.CartList);
+						break;
+				}
+				this.emitter.emit("Notify:Push", {
+					Title: response.Result == "Error" ? "Ошибка" : "Успешно",
+					Message: response.Notify, 
+					Time: 2500
+				});
+			}
 		},
 		async registration() {
 			if (this.registrationMenu.login == undefined || this.registrationMenu.login.length <= 3) {
@@ -572,6 +692,7 @@ export default {
 							Login: this.authMenu.login,
 							Password: this.authMenu.password
 						});
+            			this.$store.commit("setLoggedUser", result.data.User);
 						this.closeAuthMenu();
 						break;
 				}
@@ -1696,6 +1817,53 @@ export default {
 		color: rgb(209, 87, 0);
 		cursor: pointer;
 	}
+}
+.product-control {
+	flex: 0 1 auto;
+    height: auto;
+    min-height: 40px;
+    max-width: 60%;
+    min-width: 120px;
+    overflow-wrap: normal;
+	position: relative;
+    width: 96px;
+    height: 32px;
+    display: flex;
+    background-color: rgb(243, 243, 247);
+    box-sizing: border-box;
+    border-radius: 9999px;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+	.product-set-item {
+		margin: 0px;
+		background: none;
+		cursor: pointer;
+		position: relative;
+		vertical-align: top;
+		height: 100%;
+		width: 35.41%;
+		border: none;
+		display: flex;
+		-webkit-box-pack: center;
+		justify-content: center;
+		-webkit-box-align: center;
+		align-items: center;
+	}
+	.counter {
+		position: relative;
+		z-index: 1;
+		height: 100%;
+		color: rgb(92, 99, 112);
+		font-family: Dodo, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+		font-size: 16px;
+		display: flex;
+		-webkit-box-pack: center;
+		justify-content: center;
+		-webkit-box-align: center;
+		align-items: center;
+		font-weight: 500;
+	}
+
 }
 .main {
 	min-height: 100%;

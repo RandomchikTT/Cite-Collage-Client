@@ -30,7 +30,6 @@ emitter.on("GetMainPageInfo", async () => {
     }
 });
 
-
 emitter.emit("RouterPush", '/MainMenu');
 
 async function GetResult() {
@@ -45,7 +44,9 @@ async function GetResult() {
         }
     });
     if (result && result.data) {
-        
+        if (result.data.Result && result.data.Result == "Success") {
+            store.commit("setLoggedUser", result.data.User);
+        }
     }
 }
 GetResult();
