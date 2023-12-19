@@ -4,8 +4,7 @@ export default {
     },
     mutations: {
         setItemsList(state, serverInfo) {
-            serverInfo = JSON.parse(serverInfo);
-            state.ItemsList = serverInfo.Items;
+            state.ItemsList = serverInfo;
         },
-    },
+    }
 }

@@ -24,29 +24,15 @@ emitter.on("RouterPush", (page) => {
 });
 
 emitter.on("GetMainPageInfo", async () => {
-    const result = await host.get("MainMenu");
+    const result = await host.get("MainMenu", {
+        params: {
+            Cookie: document.cookie
+        }
+    });
     if (result.data) {
-        store.commit("setItemsList", JSON.stringify(result.data));
+        store.commit("setItemsList", result.data.Items);
+        store.commit("setLoggedUser", result.data.User) 
     }
 });
 
 emitter.emit("RouterPush", '/MainMenu');
-
-async function GetResult() {
-    const storedData = localStorage.getItem('PizzaMargarita.Cite.LoginData');
-    if (storedData == null) {
-        return;
-    }
-    const result = await host.get("Authorization", {
-        params: {
-            Login: storedData.Login,
-            Password: storedData.Password,
-        }
-    });
-    if (result && result.data) {
-        if (result.data.Result && result.data.Result == "Success") {
-            store.commit("setLoggedUser", result.data.User);
-        }
-    }
-}
-GetResult();

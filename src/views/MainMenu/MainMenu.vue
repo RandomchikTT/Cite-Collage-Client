@@ -43,7 +43,7 @@
 				</div>
 			</div>
 			<div class="right">
-				<div @click="openAuthMenu" class="enterbtn">Войти</div>
+				<div @click="openAuthMenu" class="enterbtn">{{ getLoggedInAccount ? "Выйти" : "Войти" }}</div>
 			</div>
 		</header>
 		<nav class="navkorzina">
@@ -54,9 +54,9 @@
 			</div>
 			<div @click="SettingsWindow.activeCart = true" class="navkorzinanavs">
 				<div class="dodonamekorzina">Корзина</div>
-				<template v-if="getItemInCarts > 0">
+				<template v-if="getItemsInCarts.Length > 0">
 					<div class="dodopalka"></div>
-					<div class="dodonamber">{{ getItemInCarts }}</div>
+					<div class="dodonamber">{{ getItemsInCarts.Length }}</div>
 				</template>
 			</div>
 		</nav>
@@ -211,7 +211,7 @@
 	</div>
 	<div class="last_information"></div>
 	<div class="viftreu" v-if="SettingsWindow.activeCart">
-		<div class="viftreu__korzina" v-if="getItemInCarts <= 0">
+		<div class="viftreu__korzina" v-if="getItemsInCarts.Length <= 0">
 			<svg @click="SettingsWindow.activeCart = false" class="svgexits" width="25" height="25" viewBox="0 0 25 25" fill="none">
 				<path fill-rule="evenodd" clip-rule="evenodd"
 					d="M9.61 12.199L.54 3.129A1.833 1.833 0 113.13.536l9.07 9.07L21.27.54a1.833 1.833 0 012.592 2.592l-9.068 9.068 9.07 9.07a1.833 1.833 0 01-2.59 2.592l-9.072-9.07-9.073 9.073a1.833 1.833 0 01-2.591-2.592L9.61 12.2z"
@@ -232,34 +232,32 @@
 					fill="#fff"></path>
 			</svg>
 			<div class="dodoone">
-				<div class="dodotho">1 товар на 1 118 ₽</div>
-				<div class="dodomain">
+				<div class="dodotho">{{ getItemsInCarts.Length  }} товар на {{ getItemsInCarts.Price.toFixed(2) }}  Byn</div>
+				<div class="dodomain" v-for="(item, index) in $store.state.loggedUser.CartItems" :key="index">
 					<div class="dodofree">
 						<div class="dodofive">
-							<img src="https://cdn.dodostatic.net/static/Img/Products/b3359778f8ef44c696aa6ec1a2033c6a_292x292.png"
-								class="dodofoo" />
+							<img :src="`./assets/images/${item.CategoryType}/${getItemForCartToReal(item).Image}.png`" class="dodofoo" />
 							<div class="dodododo">
 								<div class="dsadsadodo">
-									<div class="dodosix">Буженина с клюквенным соусом</div>
-									<svg class="dodoseven" fill="none" viewBox="0 0 24 24">
+									<div class="dodosix">{{ getItemForCartToReal(item).Name }}</div>
+									<svg class="dodoseven" fill="none" viewBox="0 0 24 24" @click="setItemCount(item.CategoryType, item.UUID, 0)">
 										<path
 											d="M17.3 5.3a1 1 0 111.4 1.4L13.42 12l5.3 5.3a1 1 0 11-1.42 1.4L12 13.42l-5.3 5.3a1 1 0 01-1.4-1.42l5.28-5.3-5.3-5.3A1 1 0 016.7 5.3l5.3 5.28 5.3-5.3z"
 											fill="#000"></path>
 									</svg>
 								</div>
 								<div class="dodonigh">
-									<div class="dodoleven">Большая 35 см, тонкое тесто</div>
-									<div class="onedodo">+ чеддер и пармезан</div>
+									<div class="dodoleven">{{ getItemForCartToReal(item).Description }}</div>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="thododo">
-						<div class="fredodo">1 118 ₽</div>
+						<div class="fredodo">{{ getPiceItemInCart(item).toFixed(2) }} Byn</div>
 						<div class="foododo">
-							<div class="fivedodo">-</div>
-							<div class="sixdodo">1</div>
-							<div class="fivedodo">+</div>
+							<div class="fivedodo" @click="setItemCount(item.CategoryType, item.UUID, -1)">-</div>
+							<div class="sixdodo">{{ item.Count }}</div>
+							<div class="fivedodo" @click="setItemCount(item.CategoryType, item.UUID, +1)">+</div>
 						</div>
 					</div>
 				</div>
@@ -363,6 +361,7 @@
 </template>
 <script>
 import host from '../../AxiosMethods/index.js'
+import Cookies from 'js-cookie';
 export default {
 	data() {
 		return {
@@ -384,6 +383,38 @@ export default {
 		};
 	},
 	computed: {
+		getItemForCartToReal() {
+			return (item) => {
+				return this.$store.state.MainMenu.ItemsList.find(_ => _.Cattegory == item.CategoryType && _.UUID == item.UUID);
+			}
+		},	
+		getPiceItemInCart() {
+			return (item) => {
+				switch (item.CategoryType) {
+					case "Pizza":
+						if (!item.Price || !Array.isArray(item.Price)) {
+							return 0;
+						}
+						let minPrice = Number.MAX_VALUE;
+						for (const pizza of item.Price) {
+							if (pizza && pizza.TypeDough && pizza.TypeDough.Default && pizza.TypeDough.Default.Price) {
+								const price = pizza.TypeDough.Default.Price;
+								if (price < minPrice) {
+									minPrice = price;
+								}
+							}
+						}
+						return minPrice;
+					case "Snack":
+					case "Drink":
+					case "Coctail":
+					case "Coffee":
+					case "Dessert":
+					case "Souse":
+						return this.getItemForCartToReal(item).Price * item.Count;
+				}
+			}
+		},
 		getCattegoryRealName() {
 			return (cattegory) => {
 				switch (cattegory) {
@@ -437,15 +468,19 @@ export default {
 			});
 			return cattegoryList;
 		},
-		getItemInCarts() {
+		getItemsInCarts() {
+			const obj = {
+				Length: 0,
+				Price: 0
+			}
 			if (!this.$store.state.loggedUser) {
 				return 0;
 			}
-			let lengthCart = 0;
 			this.$store.state.loggedUser.CartItems.forEach(cartItem => {
-				lengthCart += cartItem.Count;
+				obj.Length += cartItem.Count;
+				obj.Price += this.getPiceItemInCart(cartItem);
 			});
-			return lengthCart;
+			return obj;
 		},
 		getItemPrice() {
 			return (item) => {
@@ -478,6 +513,9 @@ export default {
 			return (cattegoryName) => {
 				return this.$store.state.MainMenu.ItemsList.filter(_ => _.Cattegory == cattegoryName);
 			}
+		},
+		getLoggedInAccount() {
+			return this.$store.state.loggedUser;
 		}
 	},
 	methods: {
@@ -501,7 +539,30 @@ export default {
 			this.clearAndCloseAuthMenu();
 			this.registrationMenu.active = true
 		},
-		openAuthMenu() {
+		async openAuthMenu() {
+			if (this.getLoggedInAccount) {
+				const result = await host.get("/ExitAccount", {
+					params: {
+						Cookie: document.cookie
+					}
+				});
+				if (result && result.data) {
+					const response = result.data;
+					switch (response.Result) {
+						case "Success":
+							Cookies.remove("login");
+							Cookies.remove("hash");
+							this.$store.commit("setLoggedUser", null);
+							break;
+					}
+					this.emitter.emit("Notify:Push", {
+						Title: response.Result == "Error" ? "Ошибка" : "Успешно",
+						Message: response.Notify, 
+						Time: 2500
+					});
+				}
+				return;
+			}
 			this.authMenu.active = true;
 			document.body.style.overflow = 'hidden';
 		},
@@ -516,7 +577,7 @@ export default {
             }
 		},
 		async setItemCount(cattegoryType, uuidItem, value) {
-			if (!this.$store.state.loggedUser) {
+			if (!this.getLoggedInAccount) {
 				this.emitter.emit("Notify:Push", {
 					Title: "Ошибка", 
 					Message: "Вы не вошли в аккаунт !", 
@@ -647,10 +708,6 @@ export default {
 				const response = result.data;
 				switch (response.Result) {
 					case "Success":
-						localStorage.setItem('PizzaMargarita.Cite.LoginData', {
-							Login: this.registrationMenu.login,
-							Password: this.registrationMenu.password
-						});
 						this.clearRegistrationMenu();
 						break;
 				}
@@ -662,6 +719,14 @@ export default {
 			}
 		},
 		async authorization() {
+			if (this.getLoggedInAccount) {
+				this.emitter.emit("Notify:Push", {
+					Title: "Ошибка", 
+					Message: "Сперва вам надо выйти из аккаунта !", 
+					Time: 2500
+				});
+				return;
+			}
 			if (this.authMenu.login == undefined || this.authMenu.login.length <= 3) {
 				this.emitter.emit("Notify:Push", {
 					Title: "Ошибка", 
@@ -688,11 +753,9 @@ export default {
 				const response = result.data;
 				switch (response.Result) {
 					case "Success":
-						localStorage.setItem('PizzaMargarita.Cite.LoginData', {
-							Login: this.authMenu.login,
-							Password: this.authMenu.password
-						});
-            			this.$store.commit("setLoggedUser", result.data.User);
+						Cookies.set('login', response.Login, { expires: 31104000000 });
+						Cookies.set('hash', response.Hash, { expires: 31104000000 }); 
+            			this.$store.commit("setLoggedUser", response.User);
 						this.closeAuthMenu();
 						break;
 				}
@@ -1314,10 +1377,13 @@ export default {
 	justify-content: space-between;
 	width: 30vmin;
 }
-
+.dodosix {
+	font-weight: 700;
+}
 .dodoleven {
 	display: flex;
 	flex-direction: row;
+	font-weight: 500;
 	align-items: center;
 	justify-content: flex-start;
 }
