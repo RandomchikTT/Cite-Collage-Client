@@ -37,10 +37,10 @@
                         <div class="checkout-form__section">
                             <div class="checkout-form__container container">
                                 <div class="left_data">
-                                    <div class="message message_error">
+                                    <div class="message message_error" v-if="$methods.getItemsInCarts().Price <= MinPriceForOrder">
                                         <img class="img_error"
                                             src="https://dodopizza-a.akamaihd.net/site-static/dist/26975cd6e10ae62a00e2.svg">
-                                        Недостаточная сумма заказа. Минимальная сумма доставки 17,99 руб. Заказ на меньшую
+                                        Недостаточная сумма заказа. Минимальная сумма доставки {{ MinPriceForOrder }} руб. Заказ на меньшую
                                         сумму можно оформить на самовывоз из пиццерии.
                                     </div>
                                     <div class="checkout-form__title">
@@ -52,57 +52,18 @@
                                         <div class="checkout-form__messages"></div>
                                         <div class="checkout-form__login-form">
                                             <div class="form">
-                                                <div class="form__row">
+                                                <div class="form__row" v-for="(item, key) in personData" :key="key">
                                                     <div class="form__col form__col_padtop form__col_4-1">
                                                         <label class="label label_inline">
-                                                            Имя
+                                                            {{ item.Text }}
                                                         </label>
                                                     </div>
                                                     <div class="form__col form__col_padtop form__col_4-2">
                                                         <div class="error-tooltip-wrapper">
                                                             <div class="validation-wrapper">
-                                                                <input type="text" class="input">
+                                                                <input type="text" class="input" :placeholder="item.PlaceHolder"
+                                                                    v-model="item.Value">
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form__row">
-                                                    <div class="form__col form__col_padtop form__col_4-1">
-                                                        <label class="label label_inline">
-                                                            Номер телефона
-                                                        </label>
-                                                    </div>
-                                                    <div class="form__col form__col_padtop form__col_4-2">
-                                                        <div class="error-tooltip-wrapper">
-                                                            <div class="validation-wrapper">
-                                                                <input type="text" class="input">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="checkout-form__order-type-form">
-                                            <div class="form__row">
-                                                <div class="form__col form__col_padtop form__col_4-1">
-                                                    <label class="label label_inline">
-                                                        Адрес доставки
-                                                    </label>
-                                                </div>
-                                                <!-- <div class="form__col form__col_padtop form__col_4-3">
-                                                    <div class="checkout-form__order-type-form__address">
-                                                        <div class="checkout-form__order-type-form__address-text">
-                                                            Минск, улица Алибегова д.12
-                                                        </div>
-                                                        <div class="checkout-form__order-type-form-toggle">
-                                                            <a class="samovivoz">Выбрать самовывоз</a>
-                                                        </div>
-                                                    </div>
-                                                </div> -->
-                                                <div class="form__col form__col_padtop form__col_4-2">
-                                                    <div class="error-tooltip-wrapper">
-                                                        <div class="validation-wrapper">
-                                                            <input type="text" class="input">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -160,7 +121,7 @@
                                                                 <div class="item">
                                                                     <div class="radio-button__item">
                                                                         <input type="radio" :id="'paymentgateway__newcard__' + name"
-                                                                            name="paymentgateway__savedcard" @click="data.state = !data.state">
+                                                                            name="paymentgateway__savedcard" @click="selectTypeOrder(name)">
                                                                         <label :for="'paymentgateway__newcard__' + name"
                                                                             class="radio-button__label radio-button__label_large">
                                                                             <div class="info_desc">
@@ -196,7 +157,7 @@
                                                 На главное меню
                                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="button-arrow"><path d="M10 18l6-6-6-6" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                                             </button>
-                                            <button class="button-checkout button-confirm">
+                                            <button class="button-checkout button-confirm" @click="makeOrder">
                                                 Оформить заказ
                                             </button>
                                         </div>
@@ -208,11 +169,61 @@
                                             Состав заказа
                                         </h3>
                                         <div class="content">
-
+                                            <div class="scroll">
+                                                <div class="scroll__gradient scroll__gradient_top" style="transform: translateY(-100%) translateZ(0px); opacity: 0;"></div>
+                                                <div style="position: relative; overflow: hidden; width: 100%; height: auto; min-height: 0px; max-height: 362px;">
+                                                    <div class="scroll__view" style="position: relative; overflow: scroll; margin-right: -15px; margin-bottom: -15px; min-height: 15px; max-height: 377px;">
+                                                        <div class="content__inner">
+                                                            <div class="item" v-for="(item, index) in cartItems" :key="index">
+                                                                <div class="title-wrapper">
+                                                                    <div class="title">
+                                                                        {{ $methods.getItemForCartToReal(item).Name }}
+                                                                    </div>
+                                                                    <div class="price">
+                                                                        {{ $methods.getPiceItemInCart(item).toFixed(2) }} руб.
+                                                                    </div>
+                                                                </div>
+                                                                <div class="description">
+                                                                    {{ $methods.getItemForCartToReal(item).Weight }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <section class="description">
-
+                                        <section class="total">
+                                            <div class="subtotal">
+                                                <div class="info">
+                                                    {{ $methods.getItemsInCarts().Length }} товаров
+                                                    <span>{{ $methods.getItemsInCarts().Price?.toFixed(2) }} руб.</span>
+                                                </div>
+                                                <div class="info">
+                                                    <span>
+                                                        Начислим коины
+                                                    </span>
+                                                    <span>
+                                                        + {{ getOrderCoins }}
+                                                        <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="dodocoin"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.5.75c.41 0 .75.34.75.75V3h.25a5 5 0 010 10h-.25v1.5a.75.75 0 01-1.5 0V13H4.07c-.38 0-.56 0-.7-.07a.67.67 0 01-.3-.3C3 12.5 3 12.32 3 11.94V4.07c0-.38 0-.56.07-.7a.67.67 0 01.3-.3C3.5 3 3.68 3 4.06 3h2.68V1.5c0-.41.34-.75.75-.75zm-3 10.75h4a3.5 3.5 0 100-7h-4v7z" fill="#000"></path></svg>
+                                                    </span>
+                                                </div>
+                                                <div class="info">
+                                                    <span>Доставка</span>
+                                                    <span>Бесплатно</span>
+                                                </div>
+                                            </div>
+                                            <div class="info">
+                                                Сумма заказа
+                                                <span>{{ $methods.getItemsInCarts().Price?.toFixed(2) }} руб.</span>
+                                            </div>
                                         </section>
+                                        <div class="delivery">
+                                            <div class="delivery-free">
+                                                Бесплатная доставка
+                                            </div>
+                                            Недостаточная сумма заказа. Минимальная сумма доставки 17,99 руб.
+                                            Заказ на меньшую сумму можно оформить на самовывоз из пиццерии.
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -225,9 +236,27 @@
 </template>
 
 <script>
+const MinPriceForOrder = 17.99;
+import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
+            MinPriceForOrder,
+            personData: {
+                name: {
+                    Text: "Имя",
+                    Value: ""
+                },
+                phoneNumber: {
+                    Text: "Номер телефона",
+                    PlaceHolder: "+375298889900",
+                    Value: ""
+                },
+                adress: {
+                    Text: "Адрес",
+                    Value: ""
+                },
+            },
             selectPayMentType: {
                 "Наличные": {
                     svg: null,
@@ -249,12 +278,94 @@ export default {
             }
         }
     },
+    computed: {
+        getOrderCoins() {
+            if (this.$methods.getItemsInCarts().Price < 15) {
+                return 0;
+            }
+            return (this.$methods.getItemsInCarts().Price / 15).toFixed(2);
+        },
+        ...mapGetters({
+            cartItems: 'getCartUser',
+            loggedUser: 'getLoggedUser'
+        })
+    },
     methods: {
         selectTime(time) {
             for (let key in this.selectTimeOrder) {
                 this.selectTimeOrder[key] = key == time;
             }
+        },
+        makeOrder() {
+            if (this.$methods.getItemsInCarts().Price < MinPriceForOrder) {
+                this.emitter.emit("Notify:Push", {
+					Title: "Ошибка",
+					Message: `Чтобы оформить заказ вам надо собрать корзину минимум на ${MinPriceForOrder} руб. !`, 
+					Time: 2500
+				});
+                return;
+            }
+            if (!this.personData.name.Value || this.personData.name.Value.length < 2) {
+                this.emitter.emit("Notify:Push", {
+					Title: "Ошибка",
+					Message: "Вы не указали имя !", 
+					Time: 2500
+				});
+                return;
+            }
+            if (!this.personData.phoneNumber.Value || this.personData.phoneNumber.Value.length != 13) {
+                this.emitter.emit("Notify:Push", {
+					Title: "Ошибка",
+					Message: "Проверьте правильность введенного номера !", 
+					Time: 2500
+				});
+                return;
+            }
+            if (!this.personData.adress.Value || this.personData.adress.Value.length < 7) {
+                this.emitter.emit("Notify:Push", {
+					Title: "Ошибка",
+					Message: "Вы не указали адрес !", 
+					Time: 2500
+				});
+                return;
+            }
+            let selectedTimeOrder = null;
+            for (let key in this.selectTimeOrder) {
+                if (this.selectTimeOrder[key]) {
+                    selectedTimeOrder = key;
+                }
+            }
+            if (selectedTimeOrder == null) {
+                this.emitter.emit("Notify:Push", {
+					Title: "Ошибка",
+					Message: "Вы не указали время доставки !", 
+					Time: 2500
+				});
+                return;
+            }
+            let selectedTypePayMent = null;
+            for (let key in this.selectPayMentType) {
+                if (this.selectPayMentType[key].state) {
+                    selectedTypePayMent = key;
+                }
+            }
+            if (selectedTypePayMent == null) {
+                this.emitter.emit("Notify:Push", {
+					Title: "Ошибка",
+					Message: "Вы не указали тип оплаты !", 
+					Time: 2500
+				});
+                return;
+            }
+        },
+        selectTypeOrder(typeOrder) {
+            for (let key in this.selectPayMentType) {
+                this.selectPayMentType[key].state = key == typeOrder;
+            }
         }
+    },
+    created() {
+		this.emitter.emit("GetMainPageInfo");
     }
 }
 </script>
@@ -280,12 +391,84 @@ body {
 * {
     box-sizing: border-box;
 }
-
+.content {
+    position: relative;
+    overflow: hidden;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid rgb(226, 226, 233);
+    .scroll {
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+        width: 100%;
+    }
+    .scroll__gradient_top {
+        transform: translateY(-100%) translateZ(0px);
+        opacity: 0;
+        bottom: auto;
+        top: -1px;
+        background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%);
+        opacity: 0;
+        position: absolute;
+        bottom: -1px;
+        left: 0px;
+        width: calc(100% - 10px);
+        height: 60px;
+        transform: translateZ(0px);
+        transition: opacity 0.25s ease-in-out 0s, transform 0.25s ease-in-out 0s;
+        background: linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%);
+        pointer-events: none;
+        z-index: 1000;
+    }
+    .content__inner {
+        margin-right: 12px;
+    }
+    .item {
+        width: 100%;
+        margin-bottom: 22px;
+        &:last-child {
+            margin-bottom: 0px;
+        }
+        .title-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            -webkit-box-pack: justify;
+            justify-content: space-between;
+            column-gap: 16px;
+            .price {
+                -webkit-box-flex: 0;
+                flex-grow: 0;
+                white-space: nowrap;
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 20px;
+            }
+            .title {
+                -webkit-box-flex: 1;
+                flex-grow: 1;
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 20px;
+                margin: 0px;
+            }
+        }
+    }
+}
 .title {
     font-weight: 600;
     font-size: 18px;
     line-height: 18px;
     margin: 0px 0px 32px;
+}
+.delivery {
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    margin-top: 24px;
+}
+.delivery-free {
+    color: rgb(153, 153, 153);
 }
 .button-arrow {
     left: 8px;
@@ -317,18 +500,25 @@ body {
     justify-content: space-between;
     margin-top: 48px;
 }
+.checkout-form__button-back:hover {
+    background-color: rgb(220, 220, 220),
+}
 .checkout-form__button-back {
-    padding: 0vmin 3vmin 0.3vmin 4vmin;
+    padding: 0vmin 6vmin 0.3vmin 7vmin;
     height: 48px;
     font-size: 16px;
+    font-weight: 200;
     line-height: 24px;
     background-color: rgb(243, 243, 247);
     color: rgb(92, 99, 112);
 }
+.button-confirm:hover {
+    background-color: rgb(232, 99, 3);
+}
 .button-confirm {
-    background-color: rgb(255, 240, 230);
-    color: rgb(209, 87, 0);
+    background-color: rgb(255, 105, 0);
     height: 48px;
+    color: rgb(255, 255, 255);
     padding: 12px 24px;
     font-size: 16px;
     line-height: 24px;
@@ -476,12 +666,54 @@ body {
     transition: border-color 0.2s ease 0s;
     font-variant-ligatures: no-common-ligatures;
 }
-
+.subtotal > .info {
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: 600;
+}
+.dodocoin {
+    width: 14px;
+    height: 14px;
+    vertical-align: -3px;
+}
+.info {
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 600;
+}
+.subtotal {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: normal;
+    border-bottom: 1px solid rgb(226, 226, 233);
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+}
 .container {
     width: 1280px;
     margin: 0px auto;
 }
-
+.total {
+    width: 100%;
+    color: rgb(0, 0, 0);
+    font-family: Dodo, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 18px;
+    .info {
+        display: flex;
+        -webkit-box-pack: justify;
+        justify-content: space-between;
+        font-size: 16px;
+        line-height: 20px;
+        font-weight: 600;
+    }
+}
 .main {
     min-height: 100%;
     display: flex;
@@ -545,8 +777,8 @@ body {
                 color: rgb(0, 0, 0);
                 font-family: Dodo, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
                 font-style: normal;
-                font-weight: 500;
-                font-size: 18px;
+                font-weight: 300;
+                font-size: 15px;
                 line-height: 18px;
             }
         }
@@ -654,7 +886,9 @@ body {
             line-height: 24px;
             border-top-left-radius: 0px;
             border-bottom-left-radius: 0px;
-
+            &:hover {
+                background-color: rgb(232, 99, 3);
+            }
             .button-spinner {
                 position: absolute;
                 left: 12px;

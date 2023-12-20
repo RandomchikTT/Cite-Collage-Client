@@ -13,6 +13,14 @@ const store = createStore({
             state.loggedUser.CartItems = cartItems;
         }
     },
+    getters: {
+        getCartUser(state) {
+            return state.loggedUser?.CartItems;
+        },
+        getLoggedUser(state) {
+            return state.loggedUser;
+        }
+    },
     modules: {
         MainMenu,
     }

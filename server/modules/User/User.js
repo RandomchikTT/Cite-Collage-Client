@@ -137,7 +137,7 @@ class User {
         let user;
         if (findedIndexLoggedUser !== -1) {
             const signedUser = User.SignedUsers[findedIndexLoggedUser];
-            const hashUser = getHashByData(signedUser.Login, signedUser.passWord, signedUser.UUID);
+            const hashUser = getHashByData(signedUser.Login, signedUser.Password, signedUser.UUID);
             if (hash != hashUser) {
                 console.log("[LoggedInWithCookie] Нашло пользователя в списке авторизованных !");
                 user = signedUser;
@@ -150,11 +150,10 @@ class User {
             }
             console.log("[LoggedInWithCookie] Нашло пользователя в базе по куки клиента !");
             const userBase = result[0][0];
-            const userUUID = userBase["UUID"];
             user = new User(
                 userBase["name"],
                 userBase["login"],
-                userUUID,
+                userBase["UUID"],
                 userBase["cartUUID"],
                 userBase["phoneNumber"],
                 userBase["coins"],

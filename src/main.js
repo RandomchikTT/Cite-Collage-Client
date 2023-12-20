@@ -5,12 +5,15 @@ import router from '../router/router.js'
 import mitt from 'mitt'
 import host from './AxiosMethods'
 import store from '../store/index.js'
+import functions from '../modules/index.js'
 
 const AppCreated = createApp(App);
 const emitter = mitt()
 
 AppCreated.use(router);
 AppCreated.use(store);
+
+AppCreated.config.globalProperties.$methods = functions;
 AppCreated.config.globalProperties.emitter = emitter;
 
 AppCreated.mount('#app')

@@ -54,9 +54,9 @@
 			</div>
 			<div @click="SettingsWindow.activeCart = true" class="navkorzinanavs">
 				<div class="dodonamekorzina">Корзина</div>
-				<template v-if="getItemsInCarts.Length > 0">
+				<template v-if="$methods.getItemsInCarts().Length > 0">
 					<div class="dodopalka"></div>
-					<div class="dodonamber">{{ getItemsInCarts.Length }}</div>
+					<div class="dodonamber">{{ $methods.getItemsInCarts().Length }}</div>
 				</template>
 			</div>
 		</nav>
@@ -211,7 +211,7 @@
 	</div>
 	<div class="last_information"></div>
 	<div class="viftreu" v-if="SettingsWindow.activeCart">
-		<div class="viftreu__korzina" v-if="getItemsInCarts.Length <= 0">
+		<div class="viftreu__korzina" v-if="$methods.getItemsInCarts().Length <= 0">
 			<svg @click="SettingsWindow.activeCart = false" class="svgexits" width="25" height="25" viewBox="0 0 25 25" fill="none">
 				<path fill-rule="evenodd" clip-rule="evenodd"
 					d="M9.61 12.199L.54 3.129A1.833 1.833 0 113.13.536l9.07 9.07L21.27.54a1.833 1.833 0 012.592 2.592l-9.068 9.068 9.07 9.07a1.833 1.833 0 01-2.59 2.592l-9.072-9.07-9.073 9.073a1.833 1.833 0 01-2.591-2.592L9.61 12.2z"
@@ -233,14 +233,14 @@
 				</path>
 			</svg>
 			<div class="dodoone">
-				<div class="dodotho">{{ getItemsInCarts.Length  }} товар на {{ getItemsInCarts.Price.toFixed(2) }}  Byn</div>
-				<div class="dodomain" v-for="(item, index) in $store.state.loggedUser.CartItems" :key="index">
+				<div class="dodotho">{{ $methods.getItemsInCarts().Length  }} товар на {{ $methods.getItemsInCarts().Price.toFixed(2) }}  Byn</div>
+				<div class="dodomain" v-for="(item, index) in cartItems" :key="index">
 					<div class="dodofree">
 						<div class="dodofive">
-							<img :src="`./assets/images/${item.CategoryType}/${getItemForCartToReal(item).Image}.png`" class="dodofoo" />
+							<img :src="`./assets/images/${item.CategoryType}/${$methods.getItemForCartToReal(item).Image}.png`" class="dodofoo" />
 							<div class="dodododo">
 								<div class="dsadsadodo">
-									<div class="dodosix">{{ getItemForCartToReal(item).Name }}</div>
+									<div class="dodosix">{{ $methods.getItemForCartToReal(item).Name }}</div>
 									<svg class="dodoseven" fill="none" viewBox="0 0 24 24" @click="setItemCount(item.CategoryType, item.UUID, 0)">
 										<path
 											d="M17.3 5.3a1 1 0 111.4 1.4L13.42 12l5.3 5.3a1 1 0 11-1.42 1.4L12 13.42l-5.3 5.3a1 1 0 01-1.4-1.42l5.28-5.3-5.3-5.3A1 1 0 016.7 5.3l5.3 5.28 5.3-5.3z"
@@ -248,13 +248,13 @@
 									</svg>
 								</div>
 								<div class="dodonigh">
-									<div class="dodoleven">{{ getItemForCartToReal(item).Description }}</div>
+									<div class="dodoleven">{{ $methods.getItemForCartToReal(item).Description }}</div>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="thododo">
-						<div class="fredodo">{{ getPiceItemInCart(item).toFixed(2) }} Byn</div>
+						<div class="fredodo">{{ $methods.getPiceItemInCart(item).toFixed(2) }} Byn</div>
 						<div class="foododo">
 							<div class="fivedodo" @click="setItemCount(item.CategoryType, item.UUID, -1)">-</div>
 							<div class="sixdodo">{{ item.Count }}</div>
@@ -361,6 +361,7 @@
 	</div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import host from '../../AxiosMethods/index.js'
 import Cookies from 'js-cookie';
 export default {
@@ -384,38 +385,9 @@ export default {
 		};
 	},
 	computed: {
-		getItemForCartToReal() {
-			return (item) => {
-				return this.$store.state.MainMenu.ItemsList.find(_ => _.Cattegory == item.CategoryType && _.UUID == item.UUID);
-			}
-		},	
-		getPiceItemInCart() {
-			return (item) => {
-				switch (item.CategoryType) {
-					case "Pizza":
-						if (!item.Price || !Array.isArray(item.Price)) {
-							return 0;
-						}
-						let minPrice = Number.MAX_VALUE;
-						for (const pizza of item.Price) {
-							if (pizza && pizza.TypeDough && pizza.TypeDough.Default && pizza.TypeDough.Default.Price) {
-								const price = pizza.TypeDough.Default.Price;
-								if (price < minPrice) {
-									minPrice = price;
-								}
-							}
-						}
-						return minPrice;
-					case "Snack":
-					case "Drink":
-					case "Coctail":
-					case "Coffee":
-					case "Dessert":
-					case "Souse":
-						return this.getItemForCartToReal(item).Price * item.Count;
-				}
-			}
-		},
+        ...mapGetters({
+            cartItems: 'getCartUser'
+        }),
 		getCattegoryRealName() {
 			return (cattegory) => {
 				switch (cattegory) {
@@ -468,20 +440,6 @@ export default {
 				}
 			});
 			return cattegoryList;
-		},
-		getItemsInCarts() {
-			const obj = {
-				Length: 0,
-				Price: 0
-			}
-			if (!this.$store.state.loggedUser) {
-				return 0;
-			}
-			this.$store.state.loggedUser.CartItems.forEach(cartItem => {
-				obj.Length += cartItem.Count;
-				obj.Price += this.getPiceItemInCart(cartItem);
-			});
-			return obj;
 		},
 		getItemPrice() {
 			return (item) => {
