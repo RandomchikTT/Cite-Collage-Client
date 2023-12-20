@@ -34,5 +34,3 @@ emitter.on("GetMainPageInfo", async () => {
         store.commit("setLoggedUser", result.data.User) 
     }
 });
-
-emitter.emit("RouterPush", '/MainMenu');

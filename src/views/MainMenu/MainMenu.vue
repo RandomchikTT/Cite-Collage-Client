@@ -229,7 +229,8 @@
 			<svg @click="SettingsWindow.activeCart=false" class="svgexits" width="25" height="25" viewBox="0 0 25 25" fill="none">
 				<path fill-rule="evenodd" clip-rule="evenodd"
 					d="M9.61 12.199L.54 3.129A1.833 1.833 0 113.13.536l9.07 9.07L21.27.54a1.833 1.833 0 012.592 2.592l-9.068 9.068 9.07 9.07a1.833 1.833 0 01-2.59 2.592l-9.072-9.07-9.073 9.073a1.833 1.833 0 01-2.591-2.592L9.61 12.2z"
-					fill="#fff"></path>
+					fill="#fff">
+				</path>
 			</svg>
 			<div class="dodoone">
 				<div class="dodotho">{{ getItemsInCarts.Length  }} товар на {{ getItemsInCarts.Price.toFixed(2) }}  Byn</div>
@@ -348,7 +349,7 @@
 						<div class="dswvenodo">Сумма заказа</div>
 						<div class="dnighodo">1 118 ₽</div>
 					</div>
-					<div class="dlevenodo">
+					<div class="dlevenodo" @click="$router.push('/CheckOut')">
 						К оформлению заказа<svg class="dodoneo" width="24" height="24" viewBox="0 0 24 24" fill="none">
 							<path d="M10 18l6-6-6-6" stroke="#fff" stroke-width="2" stroke-linecap="round"
 								stroke-linejoin="round"></path>

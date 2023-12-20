@@ -1,10 +1,10 @@
 const MySQL = require("../MySQL/MySQL.js");
 const Cart = require("../Cart/Cart.js");
-const getHashByLogin = require("../../utils/getHashByLogin.js");
+const { getHashByData } = require("../../utils/getHashByLogin.js");
 const HashFunctions = require("../../utils/HashFunctions.js");
 class User {
     static SignedUsers = [];
-    constructor(name, login, uuid, uuidCart, phoneNumber, coins, address) {
+    constructor(name, login, uuid, uuidCart, phoneNumber, coins, address, password) {
         this.Name = name;
         this.Login = login;
         this.UUID = uuid;
@@ -12,6 +12,7 @@ class User {
         this.CartUUID = uuidCart;
         this.Coins = coins;
         this.Address = address;
+        this.Password = password;
         User.SignedUsers.push(this);
     }
     static async Register(login, name, phoneNumber, passWord, address) {
@@ -38,8 +39,8 @@ class User {
         const cartUserUUID = await Cart.createCart();
         const userUID = await MySQL.query(`INSERT INTO users (name, login, password, phoneNumber, cartUUID, coins, address) `
             + `VALUES ('${name}','${login.toLowerCase()}','${HashFunctions.HashString(passWord)}','${phoneNumber}',${cartUserUUID},0,'${address}');`).insertId;
-        const newUser = new User(login, name, userUID, cartUserUUID, phoneNumber, 0, address);
-        const hashUser = await getHashByLogin(newUser.Login);
+        const newUser = new User(login, name, userUID, cartUserUUID, phoneNumber, 0, address, passWord);
+        const hashUser = getHashByData(login.toLowerCase(), passWord, userUID);
         return JSON.stringify({
             Result: "Success",
             Notify: "Вы успешно зарегистрировались !",
@@ -74,21 +75,27 @@ class User {
                 Notify: "Вы указали не верный пароль !"
             });
         }
-        const findedIndex = User.SignedUsers.findIndex(_ => _.Login == userLogin && _.Name == userName && _.UUID == userUUID);
-        if (findedIndex !== -1) {
-            User.SignedUsers.splice(findedIndex, 0);
-        }
         const userBase = result[0][0];
-        const user = new User(
-            userBase["name"],
-            userBase["login"],
-            userBase["UUID"],
-            userBase["cartUUID"],
-            userBase["phoneNumber"],
-            userBase["coins"],
-            userBase["address"],
-        );
-        const hash = HashFunctions.HashString(user.Login + userBase["password"] + user.UUID);
+        const UUID = userBase["UUID"];
+        const findedIndex = User.SignedUsers.findIndex(_ => _.UUID == UUID);
+        let user;
+        if (findedIndex !== -1) {
+            user = User.SignedUsers[findedIndex];
+            console.log("[LoggedIn] Нашло человека в списке авторизованных !")
+        }
+        else {
+            user = new User(
+                userBase["name"],
+                userBase["login"],
+                UUID,
+                userBase["cartUUID"],
+                userBase["phoneNumber"],
+                userBase["coins"],
+                userBase["address"],
+                userBase["password"]
+            );
+        }
+        const hash = getHashByData(user.Login, user.Password, user.UUID);
         res.cookie("login", user.Login, {
             httpOnly: false,
             maxAge: 31104000000,
@@ -113,31 +120,46 @@ class User {
             Login: user.Login
         });
     }
-    static async LoggedInWithCookie(login, hash) {
+    static async GetDataAccountByCookie(login, hash) {
         const result = await MySQL.query(`SELECT * FROM users WHERE login='${login}'`);
         if (result[0].length <= 0) {
             return null;
         }
         const userBase = result[0][0];
-        const userLogin = userBase["login"];
-        const userName = userBase["name"];
-        const userUUID = userBase["UUID"];
-        const findedIndex = User.SignedUsers.findIndex(_ => _.Login == userLogin && _.Name == userName && _.UUID == userUUID);
-        if (findedIndex !== -1) {
-            User.SignedUsers.splice(findedIndex, 0);
-        }
-        const user = new User(
-            userName,
-            userLogin,
-            userUUID,
-            userBase["cartUUID"],
-            userBase["phoneNumber"],
-            userBase["coins"],
-            userBase["address"],
-        );
-        const hashUser = await getHashByLogin(user.Login);
+        const hashUser = getHashByData(userBase["login"], userBase["password"], userBase["UUID"]);
         if (hash != hashUser) {
             return null;
+        }
+        return result;
+    }
+    static async LoggedInWithCookie(login, hash) {
+        const findedIndexLoggedUser = User.SignedUsers.findIndex(_ => _.Login == login);
+        let user;
+        if (findedIndexLoggedUser !== -1) {
+            const signedUser = User.SignedUsers[findedIndexLoggedUser];
+            const hashUser = getHashByData(signedUser.Login, signedUser.passWord, signedUser.UUID);
+            if (hash != hashUser) {
+                console.log("[LoggedInWithCookie] Нашло пользователя в списке авторизованных !");
+                user = signedUser;
+            }
+        }
+        else {
+            const result = await this.GetDataAccountByCookie(login, hash);
+            if (result == null) {
+                return;
+            }
+            console.log("[LoggedInWithCookie] Нашло пользователя в базе по куки клиента !");
+            const userBase = result[0][0];
+            const userUUID = userBase["UUID"];
+            user = new User(
+                userBase["name"],
+                userBase["login"],
+                userUUID,
+                userBase["cartUUID"],
+                userBase["phoneNumber"],
+                userBase["coins"],
+                userBase["address"],
+            );
         }
         return {
             Name: user.Name,

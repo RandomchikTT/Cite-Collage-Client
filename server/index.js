@@ -11,6 +11,7 @@ const User = require('./modules/User/User.js');
 const Coffee = require("./modules/Items/Coffee.js");
 const Dessert = require("./modules/Items/Dessert.js");
 const Souse = require("./modules/Items/Souse.js");
+const { getHashByLogin } = require("./utils/getHashByLogin.js");
 
 const ServerData = {
     MainMenuItems: []
@@ -54,6 +55,7 @@ app.use(router);
 app.listen(port, () => {
     console.log(`Порт ${port} прослушивается.`)
 });
+
 
 
 app.get("/MainMenu", async (req, res) => {
