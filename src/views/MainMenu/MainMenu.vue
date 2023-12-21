@@ -262,7 +262,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="senebdodo">
+				<!-- Список товаров для предложения человеку -->
+				<!-- <div class="senebdodo">
 					<div class="nightdodo">Добавить к заказу?</div>
 					<div class="dodosections">
 						<div class="levendodo1">
@@ -301,17 +302,17 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</div>
 			<div class="dofredo">
 				<div class="dofoodo">
 					<div class="dofivedo">
-						<div class="dosixdo">1 товар</div>
-						<div class="dosevendo">1 118 ₽</div>
+						<div class="dosixdo">{{ $methods.getItemsInCarts().Length }} товаров</div>
+						<div class="dosevendo">{{ $methods.getItemsInCarts().Price.toFixed(2) }} руб.</div>
 					</div>
 					<div class="donigdo">
 						<div class="dovelredo">
-							Начислим додокоины
+							Начислим коины
 							<svg class="dodthoo" width="16" height="16" viewBox="0 0 16 16" fill="none">
 								<path fill-rule="evenodd" clip-rule="evenodd"
 									d="M8 13.5a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM8 15A7 7 0 108 1a7 7 0 000 14z"
@@ -322,7 +323,7 @@
 							</svg>
 						</div>
 						<div class="doneodo">
-							+56
+							+ {{ $methods.getOrderCoins() }}
 							<svg fill="none" viewBox="0 0 16 16" class="dodocoin">
 								<path fill-rule="evenodd" clip-rule="evenodd"
 									d="M7.5.75c.41 0 .75.34.75.75V3h.25a5 5 0 010 10h-.25v1.5a.75.75 0 01-1.5 0V13H4.07c-.38 0-.56 0-.7-.07a.67.67 0 01-.3-.3C3 12.5 3 12.32 3 11.94V4.07c0-.38 0-.56.07-.7a.67.67 0 01.3-.3C3.5 3 3.68 3 4.06 3h2.68V1.5c0-.41.34-.75.75-.75zm-3 10.75h4a3.5 3.5 0 100-7h-4v7z"
@@ -347,7 +348,7 @@
 				<div class="dfiveodo">
 					<div class="dsixodo">
 						<div class="dswvenodo">Сумма заказа</div>
-						<div class="dnighodo">1 118 ₽</div>
+						<div class="dnighodo">{{ $methods.getItemsInCarts().Price.toFixed(2) }} руб.</div>
 					</div>
 					<div class="dlevenodo" @click="$router.push('/CheckOut')">
 						К оформлению заказа<svg class="dodoneo" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -771,6 +772,11 @@ export default {
 	padding: 0px;
 	user-select: none;
 }
+@media screen and (max-width: 1920px) {
+	.dodoimg {
+		width: 30vmin !important;
+	}
+}
 @media screen and (max-width: 1439px) {
 	.header {
 		width: 1024px !important;
@@ -806,8 +812,8 @@ export default {
 		margin-right: 39.3333px !important;
 	}
 	.dodoimg {
-		width: 33vmin !important;
-		height: 35vmin !important;
+		width: 30vmin !important;
+		height: 32vmin !important;
 	}
 }
 
@@ -1344,6 +1350,7 @@ export default {
 	flex-direction: row;
 	font-weight: 500;
 	align-items: center;
+	text-align: left;
 	justify-content: flex-start;
 }
 
@@ -1744,8 +1751,8 @@ export default {
 }
 
 .dodoimg {
-	width: 35vmin;
-	height: 35vmin;
+	width: 30vmin;
+	height: 31vmin;
 	object-fit: contain;
 	transition: all 0.55s;
 	margin: 5% 0px 0px 5%;

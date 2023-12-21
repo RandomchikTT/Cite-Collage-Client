@@ -29,6 +29,12 @@ const functions = {
                 return functions.getItemForCartToReal(item).Price * item.Count;
         }
     },
+    getOrderCoins() {
+        if (functions.getItemsInCarts().Price < 15) {
+            return 0;
+        }
+        return (functions.getItemsInCarts().Price / 15).toFixed(2);
+    },
     getItemForCartToReal(item) {
         return store.state.MainMenu.ItemsList.find(_ => _.Cattegory == item.CategoryType && _.UUID == item.UUID);
     },

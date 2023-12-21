@@ -134,7 +134,7 @@ class User {
     }
     static async LoggedInWithCookie(login, hash) {
         const findedIndexLoggedUser = User.SignedUsers.findIndex(_ => _.Login == login);
-        let user;
+        let user = null;
         if (findedIndexLoggedUser !== -1) {
             const signedUser = User.SignedUsers[findedIndexLoggedUser];
             const hashUser = getHashByData(signedUser.Login, signedUser.Password, signedUser.UUID);
@@ -160,6 +160,7 @@ class User {
                 userBase["address"],
             );
         }
+        if (user == null) return;
         return {
             Name: user.Name,
             CartItems: Cart.UserCarts.find(_ => _.UUID == user.CartUUID).CartItems,
