@@ -176,6 +176,18 @@ app.get("/AddItemInCart", async (req, res) => {
             })
             return;
         }
+        if (CattegoryType == "Pizza") {
+            const ItemData = req.query.ItemData;
+            if (!ItemData) {
+                res.send({
+                    Result: "Error",
+                    Notify: "Произошла ошибка при добавлении пиццы !",
+                })
+                return;
+            }
+            const result = await cart.addPizzaInCart(CattegoryType, ItemUUID, ItemData);
+            return res.send(result);
+        }
         const result = await cart.addItemInCart(CattegoryType, ItemUUID);
         return res.send(result);
     }

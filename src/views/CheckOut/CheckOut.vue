@@ -364,7 +364,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 body {
     margin: 0px;
     padding: 0px;
@@ -670,14 +670,6 @@ body {
     width: 14px;
     height: 14px;
     vertical-align: -3px;
-}
-.info {
-    display: flex;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
-    font-size: 16px;
-    line-height: 20px;
-    font-weight: 600;
 }
 .subtotal {
     font-size: 14px;

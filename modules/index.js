@@ -4,6 +4,31 @@ const functions = {
     getItemForCartToReal(item) {
         return store.state.MainMenu.ItemsList.find(_ => _.Cattegory == item.CategoryType && _.UUID == item.UUID);
     },
+    getItemPrice(item) {
+        switch (item.Cattegory) {
+            case "Pizza":
+                if (!item.Price || !Array.isArray(item.Price)) {
+                    return null;
+                }
+                let minPrice = Number.MAX_VALUE;
+                for (const pizza of item.Price) {
+                    if (pizza && pizza.TypeDough && pizza.TypeDough.Default && pizza.TypeDough.Default.Price) {
+                        const price = pizza.TypeDough.Default.Price;
+                        if (price < minPrice) {
+                            minPrice = price;
+                        }
+                    }
+                }
+                return `от ${minPrice} руб.`;
+            case "Snack":
+            case "Drink":
+            case "Coctail":
+            case "Coffee":
+            case "Dessert":
+            case "Souse":
+                return `${item.Price} руб.`;
+        }
+    },
     getPiceItemInCart(item) {
         switch (item.CategoryType) {
             case "Pizza":

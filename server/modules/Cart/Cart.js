@@ -56,6 +56,21 @@ class Cart {
             CartList: this.CartItems,
         });
     }
+    async addPizzaInCart(itemUUID, itemData) {
+        const findIndex = this.CartItems.findIndex(_ => _.CategoryType == 'Pizza' && _.UUID == itemUUID && _.Settings == itemData); 
+        if (findIndex !== -1) {
+            this.CartItems[findIndex].Count += 1;
+        }
+        else {
+            this.CartItems.push(new CartItem(itemUUID, "Pizza", 1, itemData));
+        }
+        await MySQL.query(`UPDATE carts SET items='${JSON.stringify(this.CartItems)}' WHERE uuid=${this.UUID}`);
+        return JSON.stringify({
+            Result: "Success",
+            Notify: "Вы успешно добавили предмет в корзину !",
+            CartList: this.CartItems,
+        });
+    }
     async addItemInCart(cattegoryType, itemUUID) {
         switch (cattegoryType) {
             case "Snack":
