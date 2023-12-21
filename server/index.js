@@ -185,7 +185,7 @@ app.get("/AddItemInCart", async (req, res) => {
                 })
                 return;
             }
-            const result = await cart.addPizzaInCart(CattegoryType, ItemUUID, ItemData);
+            const result = await cart.addPizzaInCart(ItemUUID, ItemData);
             return res.send(result);
         }
         const result = await cart.addItemInCart(CattegoryType, ItemUUID);
@@ -231,7 +231,7 @@ app.get("/SetValueItemInCart", async (req, res) => {
             })
             return;
         }
-        const result = await cart.setValueItemInCart(CattegoryType, Number(ItemUUID), Number(Value));
+        const result = await cart.setValueItemInCart(CattegoryType, Number(ItemUUID), Number(Value), req.query.ItemData);
         return res.send(result);
     }
     catch (e) {

@@ -25,7 +25,7 @@ class Cart {
         });
         console.log("Список корзин пользователей был успешно загружен.");
     }
-    async setValueItemInCart(cattegoryType, itemUUID, value) {
+    async setValueItemInCart(cattegoryType, itemUUID, value, settings = null) {
         switch (cattegoryType) {
             case "Snack":
             case "Drink":
@@ -33,6 +33,7 @@ class Cart {
             case "Coffee":
             case "Dessert":
             case "Souse":
+            case "Pizza":
                 break;
             default:
                 return JSON.stringify({
@@ -42,6 +43,11 @@ class Cart {
         }
         const findIndex = this.CartItems.findIndex(_ => _.CategoryType == cattegoryType && _.UUID == itemUUID); 
         if (findIndex !== -1) {
+            if (cattegoryType == "Pizza") {
+                if (this.CartItems[findIndex].Settings != settings) {
+                    return;
+                }
+            }
             if (this.CartItems[findIndex].Count + value <= 0 || value == 0) {
                 this.CartItems.splice(findIndex, 1);
             }

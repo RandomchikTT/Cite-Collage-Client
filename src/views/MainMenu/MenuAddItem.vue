@@ -141,7 +141,6 @@ export default {
 			}
 			switch (cattegoryType) {
 				case "Pizza":
-                    const pizzaData = this.getDataPizza;
                     const result = await host.get("AddItemInCart", {
 				        params: {
                             CattegoryType: cattegoryType,
@@ -149,8 +148,8 @@ export default {
                             Login: this.$store.state.loggedUser.Login,
                             PhoneNumber: this.$store.state.loggedUser.PhoneNumber,
                             ItemData: {
-                                Size: Number(pizzaData.selectPizzaSize),
-                                TypeDough: String(pizzaData.selectPizzaTypeTesto)
+                                Size: Number(this.getDataPizza.selectPizzaSize),
+                                TypeDough: String(this.getDataPizza.selectPizzaTypeTesto)
                             }
                         }
                     });

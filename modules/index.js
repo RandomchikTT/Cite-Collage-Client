@@ -32,19 +32,11 @@ const functions = {
     getPiceItemInCart(item) {
         switch (item.CategoryType) {
             case "Pizza":
-                if (!item.Price || !Array.isArray(item.Price)) {
+                if (!item.Settings || typeof item.Settings != 'object') {
                     return 0;
                 }
-                let minPrice = Number.MAX_VALUE;
-                for (const pizza of item.Price) {
-                    if (pizza && pizza.TypeDough && pizza.TypeDough.Default && pizza.TypeDough.Default.Price) {
-                        const price = pizza.TypeDough.Default.Price;
-                        if (price < minPrice) {
-                            minPrice = price;
-                        }
-                    }
-                }
-                return minPrice;
+                const pizzaPrice = functions.getItemForCartToReal(item).Price.find(_ => _.Size == item.Settings.Size);
+                return pizzaPrice.TypeDough[item.Settings.TypeDough].Price;
             case "Snack":
             case "Drink":
             case "Coctail":

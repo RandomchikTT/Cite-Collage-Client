@@ -280,9 +280,9 @@
 					<div class="thododo">
 						<div class="fredodo">{{ $methods.getPiceItemInCart(item).toFixed(2) }} Byn</div>
 						<div class="foododo">
-							<div class="fivedodo" @click="setItemCount(item.CategoryType, item.UUID, -1)">-</div>
+							<div class="fivedodo" @click="setItemCountWithData(item, -1)">-</div>
 							<div class="sixdodo">{{ item.Count }}</div>
-							<div class="fivedodo" @click="setItemCount(item.CategoryType, item.UUID, +1)">+</div>
+							<div class="fivedodo" @click="setItemCountWithData(item, +1)">+</div>
 						</div>
 					</div>
 				</div>
@@ -500,6 +500,45 @@ export default {
 				divElement.scrollIntoView({ behavior: "smooth" });
 			}
 		},
+		async setItemCountWithData(item, value) {
+			if (!this.getLoggedInAccount) {
+				this.emitter.emit("Notify:Push", {
+					Title: "Ошибка",
+					Message: "Вы не вошли в аккаунт !",
+					Time: 2500
+				});
+				return;
+			}
+			const cattegoryType = item.CategoryType,
+				uuidItem = item.UUID;
+			if (cattegoryType != "Pizza") {
+				this.setItemCount(cattegoryType, uuidItem, value);
+				return;
+			}
+			const result = await host.get("SetValueItemInCart", {
+				params: {
+					CattegoryType: cattegoryType,
+					ItemUUID: uuidItem,
+					Login: this.$store.state.loggedUser.Login,
+					PhoneNumber: this.$store.state.loggedUser.PhoneNumber,
+					Value: value,
+					ItemData: item.Settings
+				}
+			});
+			if (result && result.data) {
+				const response = result.data;
+				switch (response.Result) {
+					case "Success":
+						this.$store.commit("setLoggedUserCartItems", response.CartList);
+						break;
+				}
+				this.emitter.emit("Notify:Push", {
+					Title: response.Result == "Error" ? "Ошибка" : "Успешно",
+					Message: response.Notify,
+					Time: 2500
+				});
+			}
+		},
 		async setItemCount(cattegoryType, uuidItem, value) {
 			if (!this.getLoggedInAccount) {
 				this.emitter.emit("Notify:Push", {
@@ -511,7 +550,6 @@ export default {
 			}
 			switch (cattegoryType) {
 				case "Pizza":
-					// TODO MODAL
 					return;
 				case "Snack":
 				case "Drink":
@@ -1255,8 +1293,8 @@ export default {
 }
 
 .dodofoo {
-	width: 5.59vmin;
-	height: 5.59vmin;
+	width: 20.59vmin;
+	height: 17.59vmin;
 	object-fit: contain;
 }
 
