@@ -177,7 +177,7 @@
                                                             <div class="item" v-for="(item, index) in cartItems" :key="index">
                                                                 <div class="title-wrapper">
                                                                     <div class="title">
-                                                                        {{ $methods.getItemForCartToReal(item).Name }}
+                                                                        {{ $methods.getItemForCartToReal(item).Name }} x{{ item.Count }}
                                                                     </div>
                                                                     <div class="price">
                                                                         {{ $methods.getPiceItemInCart(item).toFixed(2) }} руб.

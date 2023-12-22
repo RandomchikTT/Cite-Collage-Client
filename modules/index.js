@@ -36,7 +36,7 @@ const functions = {
                     return 0;
                 }
                 const pizzaPrice = functions.getItemForCartToReal(item).Price.find(_ => _.Size == item.Settings.Size);
-                return pizzaPrice.TypeDough[item.Settings.TypeDough].Price;
+                return pizzaPrice.TypeDough[item.Settings.TypeDough].Price * item.Count;
             case "Snack":
             case "Drink":
             case "Coctail":

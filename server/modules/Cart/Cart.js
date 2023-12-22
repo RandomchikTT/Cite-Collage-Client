@@ -44,7 +44,7 @@ class Cart {
         const findIndex = this.CartItems.findIndex(_ => _.CategoryType == cattegoryType && _.UUID == itemUUID); 
         if (findIndex !== -1) {
             if (cattegoryType == "Pizza") {
-                if (this.CartItems[findIndex].Settings != settings) {
+                if (JSON.stringify(this.CartItems[findIndex].Settings) != JSON.stringify(settings)) {
                     return;
                 }
             }
