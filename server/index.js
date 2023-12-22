@@ -11,7 +11,7 @@ const User = require('./modules/User/User.js');
 const Coffee = require("./modules/Items/Coffee.js");
 const Dessert = require("./modules/Items/Dessert.js");
 const Souse = require("./modules/Items/Souse.js");
-const { getHashByLogin } = require("./utils/getHashByLogin.js");
+const { getHashByLogin, getDataByCookie } = require("./utils/getHashByLogin.js");
 
 const ServerData = {
     MainMenuItems: []
@@ -65,11 +65,7 @@ app.get("/MainMenu", async (req, res) => {
             User: null
         }
         if (req.query.Cookie && req.query.Cookie.toString().includes(";")) {
-            const cookiesObject = req.query.Cookie.split(';').reduce((acc, cookie) => {
-                const [key, value] = cookie.trim().split('=');
-                acc[key] = value;
-                return acc;
-            }, {});
+            const cookiesObject = getDataByCookie(req.query.Cookie);
             result.User = await User.LoggedInWithCookie(cookiesObject.login, cookiesObject.hash);
         }
         console.log("Подключился пользователь.");
@@ -82,11 +78,7 @@ app.get("/MainMenu", async (req, res) => {
 
 app.get("/ExitAccount", async (req, res) => {
     if (req.query.Cookie && req.query.Cookie.toString().includes(";")) {
-        const cookiesObject = req.query.Cookie.split(';').reduce((acc, cookie) => {
-            const [key, value] = cookie.trim().split('=');
-            acc[key] = value;
-            return acc;
-        }, {});
+        const cookiesObject = getDataByCookie(req.query.Cookie);
         const hashUser = await getHashByLogin(cookiesObject.login);
         if (cookiesObject.hash == hashUser) {
             const findedIndex = User.SignedUsers.findIndex(_ => _.Login == cookiesObject.login);
@@ -118,7 +110,7 @@ app.get("/Authorization", async (req, res) => {
         const result = await User.LoggedIn(req, res, Login, Password);
         return res.send(result);
     }
-    catch (e) {
+    catch (e) {А
         console.log("Ошибка.Authorization: " + e);
     }
 });
@@ -195,6 +187,91 @@ app.get("/AddItemInCart", async (req, res) => {
         console.log("Ошибка.AddItemInCart: " + e);
     }
 });
+
+app.get('/MakeOrder', async (req, res) => {
+    try {
+        const query = req.query;
+        if (query.length < 3) {
+            res.send({
+                Result: "Error",
+                Notify: "Вы не указали данные !",
+            })
+            return;
+        }
+        const { Cookie, TypePayMent, TimeOrder } = req.query;
+        if (!Cookie || !TypePayMent || !TimeOrder) {
+            res.send({
+                Result: "Error",
+                Notify: "Вы не указали данные !",
+            })
+            return;
+        }
+        const cookieData = getDataByCookie(Cookie);
+        const findIndex = User.SignedUsers.findIndex(_ => _.Login == cookieData.login);
+        if (findIndex === -1) {
+            res.send({
+                Result: "Error",
+                Notify: "Вы не найдены в списке авторизованных пользователей !",
+            })
+            return;
+        }
+        const user = User.SignedUsers[findIndex];
+        const findCartIndex = Cart.UserCarts.findIndex(_ => _.UUID == user.CartUUID);
+        if (findCartIndex === -1) {
+            res.send({
+                Result: "Error",
+                Notify: "Ваша корзина не была найдена в списке всех корзин !",
+            });
+            return;
+        }
+        const userCart = Cart.UserCarts[findCartIndex];
+        if (userCart.CartItems.length <= 0) {
+            res.send({
+                Result: "Error",
+                Notify: "У вас нету предметов в корзине !",
+            });
+            return;
+        }
+        const delItemInCart = (i) => {
+            userCart.CartItems.splice(i, 1);
+        }
+        let sumOrder = 0;
+        for (let i in userCart.CartItems) {
+            const cartItem = userCart.CartItems[i];
+            const realItem = ServerData.MainMenuItems.find(_ => _.UUID == cartItem.UUID && _.Cattegory == cartItem.CategoryType);
+            if (!realItem) {
+                delItemInCart(i);
+                continue;
+            }
+            if (realItem.Cattegory == "Pizza") {
+                if (!cartItem.Settings) {
+                    delItemInCart(i);
+                    continue;
+                }
+                const priceData = realItem.Price.find(_ => _.Size == cartItem.Settings.Size);
+                if (!priceData) {
+                    delItemInCart(i);
+                    continue;
+                }
+                sumOrder += priceData.TypeDough[cartItem.Settings.TypeDough].Price;
+                continue;
+            }
+            sumOrder += realItem.Price;
+        }
+        if (sumOrder < 17.99) {
+            return res.send({
+                Result: "Error",
+                Notify: "Минимальная сумма заказа 17.99 Byn !",
+            })
+        }
+        res.send({
+            
+        });
+    }
+    catch (e) {
+        console.log("Ошибка.MakeOrder: " + e);
+    }
+})
 
 app.get("/SetValueItemInCart", async (req, res) => {
     try {

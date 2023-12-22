@@ -238,6 +238,7 @@
 <script>
 const MinPriceForOrder = 17.99;
 import { mapGetters } from 'vuex'
+import host from '../../AxiosMethods/index.js'
 export default {
     data() {
         return {
@@ -290,7 +291,15 @@ export default {
                 this.selectTimeOrder[key] = key == time;
             }
         },
-        makeOrder() {
+        async makeOrder() {
+            if (!this.$methods.getLoggedInAccount()) {
+				this.emitter.emit("Notify:Push", {
+					Title: "Ошибка",
+					Message: "Вы не вошли в аккаунт !",
+					Time: 2500
+				});
+				return;
+			}
             if (this.$methods.getItemsInCarts().Price < MinPriceForOrder) {
                 this.emitter.emit("Notify:Push", {
 					Title: "Ошибка",
@@ -350,6 +359,26 @@ export default {
 					Time: 2500
 				});
                 return;
+            }
+            const result = await host.get("/MakeOrder", {
+                params: {
+                    Cookie: document.cookie,
+                    TypePayMent: selectedTypePayMent,
+                    TimeOrder: selectedTimeOrder,
+                }
+            });
+            if (result && result.data) {
+                const response = result.data;
+                switch (response.Result) {
+                    case "Success":
+                        this.$router.push("/MainMenu");
+                        break;
+                }
+                this.emitter.emit("Notify:Push", {
+                    Title: response.Result == "Error" ? "Ошибка" : "Успешно",
+                    Message: response.Notify,
+                    Time: 2500
+                });
             }
         },
         selectTypeOrder(typeOrder) {

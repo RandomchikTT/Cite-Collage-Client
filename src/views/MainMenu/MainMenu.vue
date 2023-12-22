@@ -65,7 +65,7 @@
 				</div>
 			</div>
 			<div class="right">
-				<div @click="openAuthMenu" class="enterbtn">{{ getLoggedInAccount ? "Выйти" : "Войти" }}</div>
+				<div @click="openAuthMenu" class="enterbtn">{{ $methods.getLoggedInAccount() ? "Выйти" : "Войти" }}</div>
 			</div>
 		</header>
 		<nav class="navkorzina">
@@ -265,7 +265,7 @@
 								<div class="dsadsadodo">
 									<div class="dodosix">{{ $methods.getItemForCartToReal(item).Name }}</div>
 									<svg class="dodoseven" fill="none" viewBox="0 0 24 24"
-										@click="setItemCount(item.CategoryType, item.UUID, 0)">
+										@click="setItemCountWithData(item, 0)">
 										<path
 											d="M17.3 5.3a1 1 0 111.4 1.4L13.42 12l5.3 5.3a1 1 0 11-1.42 1.4L12 13.42l-5.3 5.3a1 1 0 01-1.4-1.42l5.28-5.3-5.3-5.3A1 1 0 016.7 5.3l5.3 5.28 5.3-5.3z"
 											fill="#000"></path>
@@ -434,9 +434,6 @@ export default {
 			return (cattegoryName) => {
 				return this.$store.state.MainMenu.ItemsList.filter(_ => _.Cattegory == cattegoryName);
 			}
-		},
-		getLoggedInAccount() {
-			return this.$store.state.loggedUser;
 		}
 	},
 	methods: {
@@ -464,7 +461,7 @@ export default {
 			this.registrationMenu.active = true
 		},
 		async openAuthMenu() {
-			if (this.getLoggedInAccount) {
+			if (this.$methods.getLoggedInAccount()) {
 				const result = await host.get("/ExitAccount", {
 					params: {
 						Cookie: document.cookie
@@ -501,7 +498,7 @@ export default {
 			}
 		},
 		async setItemCountWithData(item, value) {
-			if (!this.getLoggedInAccount) {
+			if (!this.$methods.getLoggedInAccount()) {
 				this.emitter.emit("Notify:Push", {
 					Title: "Ошибка",
 					Message: "Вы не вошли в аккаунт !",
@@ -540,7 +537,7 @@ export default {
 			}
 		},
 		async setItemCount(cattegoryType, uuidItem, value) {
-			if (!this.getLoggedInAccount) {
+			if (!this.$methods.getLoggedInAccount()) {
 				this.emitter.emit("Notify:Push", {
 					Title: "Ошибка",
 					Message: "Вы не вошли в аккаунт !",
@@ -641,7 +638,7 @@ export default {
 			}
 		},
 		async authorization() {
-			if (this.getLoggedInAccount) {
+			if (this.$methods.getLoggedInAccount()) {
 				this.emitter.emit("Notify:Push", {
 					Title: "Ошибка",
 					Message: "Сперва вам надо выйти из аккаунта !",

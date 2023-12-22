@@ -46,6 +46,9 @@ const functions = {
                 return functions.getItemForCartToReal(item).Price * item.Count;
         }
     },
+    getLoggedInAccount() {
+        return store.state.loggedUser;
+    },
     getOrderCoins() {
         if (functions.getItemsInCarts().Price < 15) {
             return 0;

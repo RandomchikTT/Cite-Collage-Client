@@ -15,6 +15,13 @@ module.exports = {
             resolve(realHash);
         })
     },
+    getDataByCookie(cookieEnt) {
+        return cookieEnt.split(';').reduce((acc, cookie) => {
+            const [key, value] = cookie.trim().split('=');
+            acc[key] = value;
+            return acc;
+        }, {});
+    },
     getHashByData(login, password, uuid) {
         return HashFunctions.HashString(login + password + uuid);
     }

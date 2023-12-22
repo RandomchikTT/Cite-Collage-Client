@@ -68,7 +68,7 @@ class Cart {
             this.CartItems[findIndex].Count += 1;
         }
         else {
-            this.CartItems.push(new CartItem(itemUUID, "Pizza", 1, itemData));
+            this.CartItems.push(new CartItem(Number(itemUUID), "Pizza", 1, itemData));
         }
         await MySQL.query(`UPDATE carts SET items='${JSON.stringify(this.CartItems)}' WHERE uuid=${this.UUID}`);
         return JSON.stringify({
@@ -97,7 +97,7 @@ class Cart {
             this.CartItems[findIndex].Count += 1;
         }
         else {
-            this.CartItems.push(new CartItem(itemUUID, cattegoryType, 1));
+            this.CartItems.push(new CartItem(Number(itemUUID), cattegoryType, 1));
         }
         await MySQL.query(`UPDATE carts SET items='${JSON.stringify(this.CartItems)}' WHERE uuid=${this.UUID}`);
         return JSON.stringify({
