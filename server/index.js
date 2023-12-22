@@ -12,6 +12,7 @@ const Coffee = require("./modules/Items/Coffee.js");
 const Dessert = require("./modules/Items/Dessert.js");
 const Souse = require("./modules/Items/Souse.js");
 const { getHashByLogin, getDataByCookie } = require("./utils/getHashByLogin.js");
+const MySQL = require("./modules/MySQL/MySQL.js");
 
 const ServerData = {
     MainMenuItems: []
@@ -191,14 +192,14 @@ app.get("/AddItemInCart", async (req, res) => {
 app.get('/MakeOrder', async (req, res) => {
     try {
         const query = req.query;
-        if (query.length < 3) {
+        if (query.length < 4) {
             res.send({
                 Result: "Error",
                 Notify: "Вы не указали данные !",
             })
             return;
         }
-        const { Cookie, TypePayMent, TimeOrder } = req.query;
+        const { Cookie, TypePayMent, TimeOrder, PersonData } = req.query;
         if (!Cookie || !TypePayMent || !TimeOrder) {
             res.send({
                 Result: "Error",
@@ -232,8 +233,9 @@ app.get('/MakeOrder', async (req, res) => {
             });
             return;
         }
-        const delItemInCart = (i) => {
+        const delItemInCart = async (i) => {
             userCart.CartItems.splice(i, 1);
+            await MySQL.query(`UPDATE carts SET items='${JSON.stringify(userCart.CartItems)}' WHERE uuid=${userCart.UUID}`);
         }
         let sumOrder = 0;
         for (let i in userCart.CartItems) {
@@ -253,19 +255,24 @@ app.get('/MakeOrder', async (req, res) => {
                     delItemInCart(i);
                     continue;
                 }
-                sumOrder += priceData.TypeDough[cartItem.Settings.TypeDough].Price;
+                sumOrder += priceData.TypeDough[cartItem.Settings.TypeDough].Price * cartItem.Count;
                 continue;
             }
-            sumOrder += realItem.Price;
+            sumOrder += realItem.Price * cartItem.Count;
         }
         if (sumOrder < 17.99) {
             return res.send({
                 Result: "Error",
                 Notify: "Минимальная сумма заказа 17.99 Byn !",
-            })
+            });
         }
+        const orderID = await MySQL.query(`INSERT INTO orders (uuidUser, name, carts, address, phoneNumber) `
+            + `VALUES (${user.UUID},'${PersonData.name}','${JSON.stringify(userCart.CartItems)}','${PersonData.adress}','${PersonData.phoneNumber}')`).insertId;
+        userCart.CartItems = [];
+        await MySQL.query(`UPDATE carts SET items='${JSON.stringify(userCart.CartItems)}' WHERE uuid=${userCart.UUID}`);
         res.send({
-            
+            Result: "Success",
+            Notify: `Вы успешно оформили заказ №${orderID} !`,
         });
     }
     catch (e) {

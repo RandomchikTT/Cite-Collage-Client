@@ -360,11 +360,16 @@ export default {
 				});
                 return;
             }
+            const personDataValid = {};
+            for (let key in this.personData) {
+                personDataValid[key] = this.personData[key].Value;
+            }
             const result = await host.get("/MakeOrder", {
                 params: {
                     Cookie: document.cookie,
                     TypePayMent: selectedTypePayMent,
                     TimeOrder: selectedTimeOrder,
+                    PersonData: personDataValid
                 }
             });
             if (result && result.data) {
