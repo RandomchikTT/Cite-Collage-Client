@@ -392,7 +392,7 @@ export default {
             }
         }
     },
-    created() {
+    mounted() {
 		this.emitter.emit("GetMainPageInfo");
     }
 }
