@@ -13,6 +13,7 @@ const Dessert = require("./modules/Items/Dessert.js");
 const Souse = require("./modules/Items/Souse.js");
 const { getHashByLogin, getDataByCookie } = require("./utils/getHashByLogin.js");
 const MySQL = require("./modules/MySQL/MySQL.js");
+const FeedBack = require("./modules/FeedBack/FeedBack.js");
 
 const ServerData = {
     MainMenuItems: []
@@ -279,6 +280,75 @@ app.get('/MakeOrder', async (req, res) => {
         console.log("Ошибка.MakeOrder: " + e);
     }
 })
+
+app.get("/AddFeedBack", async (req, res) => {
+    try {
+        const query = req.query;
+        console.log(query)
+        if (query.length < 3) {
+            res.send({
+                Result: "Error",
+                Notify: "Вы не указали данные !",
+            })
+            return;
+        }
+        const { FeedBackText, Cookie, PhoneNumber, Login } = req.query;
+        if (!FeedBackText || !Cookie || !PhoneNumber || !Login) return;
+        const cookieData = getDataByCookie(Cookie);
+        const findIndex = User.SignedUsers.findIndex(_ => _.Login == cookieData.login);
+        if (findIndex === -1) {
+            res.send({
+                Result: "Error",
+                Notify: "Вы не найдены в списке авторизованных пользователей !",
+            })
+            return;
+        }
+        const user = User.SignedUsers[findIndex];
+        await new FeedBack(FeedBackText, user.UUID).create();
+        const result = await MySQL.query('SELECT * FROM `feedbacks` ORDER BY `                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv` DESC LIMIT 30');
+        return res.send({
+            Result: "Success",
+            Data: result[0],
+            Page: 1,
+        })
+    }
+    catch (e) {
+        console.log("Ошибка.AddFeedBack: " + e);
+    }
+})
+
+app.get("/GetFeedBackList", async (req, res) => {
+    try {
+        const query = req.query;
+        if (query.length < 1) {
+            res.send({
+                Result: "Error",
+                Notify: "Вы не указали данные !",
+            })
+            return;
+        }
+        let { Page } = req.query;
+        if (!Page) {
+            res.send({
+                Result: "Error",
+                Notify: "Ошибка входных данных !",
+            })
+            return;
+        }
+        if (Page > 0) {
+            Page -= 1;
+        }
+        const result = await MySQL.query('SELECT * FROM `feedbacks` ORDER BY `time` DESC LIMIT 30 ' +  `OFFSET ${Page * 30}`)
+        
+        return res.send({
+            Result: "Success",
+            Data: result[0]
+        })
+    }
+    catch (e) {
+        console.log("ERROR.GetFeedBackList: " + e)
+    }
+});
 
 app.get("/SetValueItemInCart", async (req, res) => {
     try {

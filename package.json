@@ -4,7 +4,7 @@
 	"private": true,
 	"author": "Randomchik",
 	"scripts": {
-		"dev": "vite",
+		"dev": "vite && cd:/server/ npm run dev",
 		"build": "vite build",
 		"serve": "vite preview"
 	},

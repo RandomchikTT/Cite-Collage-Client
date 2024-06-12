@@ -41,7 +41,7 @@
 							<div class="tochkadiv"></div>
 						</div>
 						4.75
-						<svg class="svgdodoreiting" width="16" height="16" viewBox="0 0 16 16" fill="none"
+						<svg @click="$router.push('/FeedBacks')" class="svgdodoreiting" width="16" height="16" viewBox="0 0 16 16" fill="none"
 							xmlns="http://www.w3.org/2000/svg">
 							<defs>
 								<linearGradient id="star_16_svg__a">
