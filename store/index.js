@@ -19,7 +19,7 @@ const store = createStore({
         },
         getLoggedUser(state) {
             return state.loggedUser;
-        }
+        },
     },
     modules: {
         MainMenu,
