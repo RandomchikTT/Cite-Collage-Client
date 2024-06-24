@@ -64,117 +64,28 @@
 				</div>
 			</div>
 		</header>
-        <div class="feedBack">
-            <div class="feedBackData">
-                <h1>Отзывы</h1>
-                <div class="feedBackList">
-                    <div class="feedBackItem" v-for="(item, index) in feedBacks" :key="index">
-                        <div class="headerFeedBackItem">Пользователь {{ item.idUser }}, {{ formatDateTime(item.time) }} ID: {{ item.id }}</div>
-                        <div class="text">{{ item.text }}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="createFeedBackData">
-				<textarea class="feedBackInput" v-model="feedBackText" placeholder="Отзыв"></textarea>
-                <button class="sendFeedBack" @click="sendFeedBack">Отправить</button>
-            </div>
-        </div>
+		<div class="videoLessons">
+			<div class="videoLesson">	
+				<div class="name">Видео как приготовить тесто</div>
+				<iframe width="600" height="450" src="https://www.youtube.com/embed/lrl6LxfQRW4" frameborder="0" allowfullscreen></iframe>
+			</div>
+			<div class="videoLesson">	
+				<div class="name">Как управлять меню руками партнеров</div>
+				<iframe width="600" height="450" src="https://www.youtube.com/embed/bBkr25iR0Fs" frameborder="0" allowfullscreen></iframe>
+			</div>
+			<div class="videoLesson">	
+				<div class="name">Как управлять меню руками партнеров</div>
+				<iframe width="600" height="450" src="https://www.youtube.com/embed/bBkr25iR0Fs" frameborder="0" allowfullscreen></iframe>
+			</div>
+		</div>
     </div>
 </template>
 
 <script>
-import host from '../../AxiosMethods/index.js'
 export default {
-    data() {
-        return {
-            page: 1,
-            feedBacks: [],
-            feedBackText: null,
-        }
-    },
-    methods: {
-		async sendFeedBack() {
-			if (this.feedBackText == null || this.feedBackText.length < 3) {
-				this.emitter.emit("Notify:Push", {
-					Title: "Ошибка",
-					Message: "Длина текста отзыва должна быть не меньше 3 символов !",
-					Time: 2500
-				});
-				return;
-			}
-			if (!this.$methods.getLoggedInAccount()) {
-				this.emitter.emit("Notify:Push", {
-					Title: "Ошибка",
-					Message: "Вы не вошли в аккаунт !",
-					Time: 2500
-				});
-				return;
-			}
-            const result = await host.get("AddFeedBack", {
-                params: {
-                    Cookie: document.cookie,
-					Login: this.$store.state.loggedUser.Login,
-					PhoneNumber: this.$store.state.loggedUser.PhoneNumber,
-					FeedBackText: this.feedBackText,
-                }
-            });
-			const response = result.data;
-			const $this = this;
-            if (result && result.data) {
-                switch (response.Result) {
-                    case "Success":
-						this.emitter.emit("Notify:Push", {
-							Title: "Успешно",
-							Message: "Вы успешно добавили свой отзыв !",
-							Time: 2500
-						});
-						$this.page = response.Page;
-                        $this.feedBacks = response.Data;
-                        break;
-                    default:
-                        this.emitter.emit("Notify:Push", {
-                            Title: response.Result == "Error" ? "Ошибка" : "Успешно",
-                            Message: response.Notify,
-                            Time: 2500
-                        });
-                        break;
-                }
-            }
-		},
-        formatDateTime(isoString) {
-            const date = new Date(isoString);
-            const formattedDate = date.toISOString().replace(/-/g, '.').replace('T', ' ').slice(0, 19);
-            return formattedDate;
-        }
-    },
-    mounted() {
-        const $this = this;
-        const getFeedBack = async () => {
-            const result = await host.get("GetFeedBackList", {
-                params: {
-                    Page: $this.page,
-                }
-            });
-            let response = result.data;
-            if (result && result.data) {
-                switch (response.Result) {
-                    case "Success":
-                        $this.feedBacks = response.Data;
-                        break;
-                    default:
-                        response = null;
-                        this.emitter.emit("Notify:Push", {
-                            Title: response.Result == "Error" ? "Ошибка" : "Успешно",
-                            Message: response.Notify,
-                            Time: 2500
-                        });
-                        break;
-                }
-            }
-            return response;
-        }
-        getFeedBack();
-    }
+	data() {
+
+	}
 }
 </script>
 
@@ -184,6 +95,11 @@ export default {
 	display: flex;
 	flex-flow: column;
 	margin: 0px 32px 0px 32px;
+
+	.videoLessons {
+		display: flex;
+		justify-content: space-between;
+	}
 
 	.header {
 		display: flex;
@@ -315,54 +231,6 @@ export default {
 			-webkit-box-align: center;
 			align-items: center;
 		}
-    }
-    .feedBack {
-        display: flex;
-        justify-content: space-between;
-        .feedBackData {
-            width: 45vw;
-            height: 80vh;
-            .feedBackList {
-				overflow-y: auto;
-				height: 80%;
-                .feedBackItem {
-                    border: 3px solid orange;
-                    border-radius: 15px;
-                    padding-left: 10px;
-                    margin: 0 0 10px 0;
-                    .headerFeedBackItem {
-                        font-weight: 500;
-                        color: rgb(255, 105, 0);
-                    }
-                    .text {
-                        margin: 5px 0 10px 0;
-                    }
-                }
-            }
-        }
-        .createFeedBackData {
-            margin-top: 12vh;
-            width: 50%;
-            .feedBackInput  {
-				width: 45vw;
-				height: 40vh;
-				padding: 10px; 
-				border: 1px solid #ccc; 
-				border-radius: 4px; 
-				resize: none; 
-				font-family: Arial, sans-serif; 
-				line-height: 1.5; 
-            }
-			.sendFeedBack {
-				background: orange;
-				border: none;
-				color: white;
-				height: 7vh;
-				width: 25vh;
-				font-weight: 500;
-				font-size: 20px;
-			}
-        }
     }
 }
 </style>

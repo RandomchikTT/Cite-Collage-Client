@@ -63,6 +63,9 @@
 						<span class="contacts-phone__description-text">Звонок по телефону</span>
 					</div>
 				</div>
+				<div class="phoneinfo">
+					<span class="contacts-phone__description-text" @click="$router.push('/VideoLessons')">Видео уроки</span>
+				</div>
 			</div>
 			<div class="right">
 				<div @click="openAuthMenu" class="enterbtn">{{ $methods.getLoggedInAccount() ? "Выйти" : "Войти" }}</div>
@@ -218,11 +221,11 @@
 				Изображения продуктов могут отличаться от продуктов в заказе.
 			</article>
 			<article class="zone_dostavka">
-				<h3 class="title">Зона доставки ограничена</h3>
+				<h3 class="title">Рестораны</h3>
 				<button class="delivery-zone-menu-page delivery-zone-menu-page_link">
 					<img src="../../../public/assets/images/Map/Map.jpg" class="delivery-zone-menu-page__map-img" alt="map">
-					<span class="delivery-zone-menu-page__content">
-						<span class="delivery-zone-menu-page__title">Зона доставки</span>
+					<span class="delivery-zone-menu-page__content" @click="openMaps">
+						<span class="delivery-zone-menu-page__title">Рестораны</span>
 					</span>
 				</button>
 			</article>
@@ -437,6 +440,9 @@ export default {
 		}
 	},
 	methods: {
+		openMaps() {
+			window.open("https://www.google.com/maps/dir/?api=1&origin=улица Алибегова, дом 12, Минск, Беларусь&destination=улица Пушкина, дом 5, Москва, Россия&waypoints=улица Ленина, дом 10, Киев, Украина|улица Мира, дом 15, Варшава, Польша");
+		},
 		closeItemMenu() {
 			this.selectedAddedItem = null;
 		},
